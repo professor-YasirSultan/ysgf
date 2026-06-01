@@ -1,165 +1,774 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="YSGF — Yasir Sultan Geodesic Flux.">
-  <meta name="theme-color" content="#0a0f1f">
-  <title>YSGF — Yasir Sultan Geodesic Flux.</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>YSGF · Yasir Sultan Geodesic Flux | Homepage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at 20% 30%, #0b1120, #03060c);
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      position: relative;
-      overflow-x: hidden;
-    }
-    /* main card container */
-    .construction-card {
-      max-width: 780px;
-      width: 100%;
-      background: rgba(8, 18, 28, 0.75);
-      backdrop-filter: blur(12px);
-      border-radius: 3rem;
-      padding: 3rem 2rem;
-      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(90, 150, 220, 0.2) inset, 0 0 0 2px rgba(255, 255, 255, 0.03) inset;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      text-align: center;
-      position: relative;
-      z-index: 10;
-      border: 1px solid rgba(70, 130, 200, 0.25);
-    }
+        /* Dark mode is now default */
+        :root {
+            --bg-gradient-start: #0a1118;
+            --bg-gradient-end: #121e2a;
+            --card-bg: rgba(18, 30, 40, 0.85);
+            --card-bg-hover: #1e2f3c;
+            --text-primary: #eef4ff;
+            --text-secondary: #bdd4e3;
+            --text-muted: #9bb8cf;
+            --border-light: rgba(100, 150, 180, 0.3);
+            --accent: #2c8eb3;
+            --accent-hover: #3da5cf;
+            --badge-bg: rgba(200, 220, 240, 0.12);
+            --tag-bg: #1b3748;
+            --btn-outline-border: #4a9fbf;
+            --btn-outline-text: #bde4f5;
+            --highlight-bg: #172b36;
+            --modal-overlay: rgba(0, 0, 0, 0.85);
+            --gallery-card-bg: #1a2c38cc;
+        }
 
-    .construction-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 32px 55px -14px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(100, 180, 250, 0.35) inset;
-      border-color: rgba(100, 180, 250, 0.4);
-    }
+        /* Light mode override (if user toggles) */
+        body.light {
+            --bg-gradient-start: #f0f4fa;
+            --bg-gradient-end: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-bg-hover: white;
+            --text-primary: #1a2a3a;
+            --text-secondary: #2c4b63;
+            --text-muted: #2c4e66;
+            --border-light: rgba(30, 74, 107, 0.2);
+            --accent: #0f4c5f;
+            --accent-hover: #1b6a82;
+            --badge-bg: rgba(26, 42, 58, 0.08);
+            --tag-bg: #eaf4f9;
+            --btn-outline-border: #1f6d8a;
+            --btn-outline-text: #1a5c77;
+            --highlight-bg: #dcecf3;
+            --modal-overlay: rgba(0, 0, 0, 0.75);
+            --gallery-card-bg: rgba(255, 255, 240, 0.75);
+        }
 
-    /* geodesic ring decoration (dynamic rotation) */
-    .geometric-ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 110%;
-      height: 110%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: -1;
-      opacity: 0.4;
-      border-radius: 50%;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 20%, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.2s ease;
+            line-height: 1.4;
+        }
 
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 4rem;
+        }
 
+        /* Top bar with theme toggle + language buttons */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
 
-    /* logo styles */
-    .logo {
-      font-size: 4.5rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #FFFFFF, #a3c6ff, #6fa8ff);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      text-shadow: 0 2px 10px rgba(0, 160, 255, 0.2);
-      margin-bottom: 0.6rem;
-    }
+        .lang-buttons {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
 
-    .brand-full {
-      font-size: 2.2rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      color: #bfd9ff;
-      background: rgba(255,255,245,0.05);
-      display: inline-block;
-      padding: 0.3rem 1.4rem;
-      border-radius: 60px;
-      backdrop-filter: blur(4px);
-      margin-bottom: 2.2rem;
-      border: 0.5px solid rgba(130, 200, 255, 0.3);
-    }
-a{
-display: block;
-      color: #bfd9ff;
-text-decoration: none;
-}
-    /* under construction badge */
-    .status-chip {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(8px);
-      padding: 0.7rem 1.8rem;
-      border-radius: 100px;
-      border: 1px solid rgba(255, 200, 100, 0.6);
-      margin-bottom: 2.8rem;
-      font-weight: 700;
-      font-size: 1.2rem;
-      letter-spacing: 0.03em;
-      color: #ffe3a3;
-      box-shadow: 0 0 12px rgba(255, 160, 50, 0.2);
-    }
+        .lang-btn {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-light);
+            border-radius: 40px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
 
-    .footer-note {
-      font-size: 0.85rem;
-      color: #8aa6cc;
-      letter-spacing: 0.3px;
-      margin-top: 1rem;
-      border-top: none;
-      padding-top: 0;
-      opacity: 0.9;
-    }
+        .lang-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
 
+        .coming-soon {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
 
-      .logo {
-        font-size: 3rem;
-      }
-      .brand-full {
-        font-size: 1rem;
-        padding: 0.2rem 1rem;
-        margin-bottom: 1.8rem;
-      }
-      .status-chip {
-        font-size: 0.95rem;
-        padding: 0.5rem 1.3rem;
-        margin-bottom: 2rem;
-      }
-      .footer-note {
-        font-size: 0.7rem;
-      }
-    }
-  </style>
+        .coming-soon:hover {
+            background: var(--card-bg);
+            color: var(--text-secondary);
+            border-color: var(--border-light);
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.2s;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* 16:9 banner with external image */
+        .banner-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #07121c;
+            border-radius: 2rem;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-light);
+        }
+
+        .banner-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--badge-bg);
+            backdrop-filter: blur(4px);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-light);
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #5bb5d0, #8fcbe0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 0.2rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1.8rem 0 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--btn-outline-border);
+            color: var(--btn-outline-text);
+        }
+
+        .btn-outline:hover {
+            background: var(--card-bg);
+            transform: translateY(-2px);
+        }
+
+        /* cards grid (feature cards) */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(2px);
+            border-radius: 1.8rem;
+            padding: 1.6rem;
+            transition: all 0.25s;
+            border: 1px solid var(--border-light);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            background: var(--card-bg-hover);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .card-icon {
+            font-size: 2.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: var(--accent);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-size: 0.92rem;
+        }
+
+        .tech-tag {
+            display: inline-block;
+            background: var(--tag-bg);
+            border-radius: 30px;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.8rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-top: 0.6rem;
+        }
+
+        /* gallery image cards */
+        .gallery-section {
+            margin: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
+            text-align: center;
+            color: var(--accent);
+        }
+
+        .gallery-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .gallery-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(2px);
+            border-radius: 1.8rem;
+            overflow: hidden;
+            transition: all 0.25s;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-6px);
+            background: var(--card-bg-hover);
+            box-shadow: 0 20px 28px -12px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            display: block;
+            background: #2c3e44;
+            transition: 0.2s;
+        }
+
+        .gallery-card-content {
+            padding: 1.2rem 1.2rem 1.5rem;
+        }
+
+        .gallery-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--accent);
+        }
+
+        .gallery-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .placeholder-badge {
+            display: inline-block;
+            background: var(--tag-bg);
+            border-radius: 20px;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.7rem;
+            margin-top: 0.6rem;
+            color: var(--accent);
+        }
+
+        .highlight-features {
+            background: var(--highlight-bg);
+            border-radius: 1.8rem;
+            padding: 1.2rem 1.8rem;
+            margin: 1rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .footnote {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-light);
+            padding-top: 2rem;
+        }
+
+        /* lightbox modal */
+        .lightbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        .lightbox-modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 85vw;
+            max-height: 85vh;
+            background: var(--card-bg-hover);
+            padding: 0.8rem;
+            border-radius: 2rem;
+            position: relative;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 75vh;
+            border-radius: 1rem;
+            display: block;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.4rem;
+            transition: 0.1s;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .gallery-cards-grid {
+                gap: 1rem;
+            }
+        }
+    </style>
+    <meta name="description"
+        content="YSGF – Yasir Sultan Geodesic Flux. Shortest paths, true distances, observer‑centric 3D/2D maps. Open source geodesic framework.">
+    <meta name="keywords"
+        content="geodesic, GIS, shortest path, true distance, interactive 3D globe, mapping, YSGF , Yasir Sultan">
 </head>
-<body>
 
-<div class="construction-card">
-  <div class="geometric-ring"></div>
+<body class="dark">
+    <!-- <button id="backToTop" aria-label="Back to top" style="position:fixed; bottom:20px; right:20px; background:var(--accent); color:white; border:none; border-radius:50%; width:44px; height:44px; font-size:1.5rem; cursor:pointer; z-index: 10;">↑</button> -->
+    <div class="container">
+        <div class="banner-wrapper">
+            <img class="banner-image" src="https://professor-yasirsultan.github.io/ysgf/img/banner.jpg"
+                alt="YSGF Geodesic Flux Banner"
+                onerror="this.src='https://placehold.co/1600x900/1f5a74/white?text=YSGF+Banner'">
+        </div>
+        <!-- Top bar: language switcher + theme toggle -->
+        <div class="top-bar">
+            <!-- <div class="lang-buttons">
+                <a href="https://professor-yasirsultan.github.io/ysgf/ar.html" class="lang-btn"
+                    id="arabicBtn">العربية</a>
+                <span class="lang-btn coming-soon">Français</span>
+                <span class="lang-btn coming-soon">Español</span>
+                <span class="lang-btn coming-soon">Deutsch</span>
+                <span class="lang-btn coming-soon">中文</span>
+            </div> -->
+            <div class="theme-toggle" id="themeToggleBtn">
+                🌓 <span id="themeLabel">Light mode</span>
+            </div>
+        </div>
 
-  <!-- only the requested text elements -->
-  <div class="logo">YSGF</div>
-  <div class="brand-full">Yasir Sultan Geodesic Flux</div><br>
-  <div class="status-chip"><a href="https://doi.org/10.5281/zenodo.20104343" target="_blank">https://doi.org/10.5281/zenodo.20104343</a></div><br>
-  <div class="status-chip"><a href="https://professor-yasirsultan.github.io/ysgf/YSGF_v1-2.pdf" target="_blank">Download PDF (Version 1.2)</a></div><br>
-<div class="status-chip"><a href="https://professor-yasirsultan.github.io/ysgf/api/index.html" target="_blank">try it online</a></div><br>
-<br>
-<img src="https://professor-yasirsultan.github.io/ysgf/globeLondon.png" alt="globeLondon" width="80%"><br><br>
-<img src="https://professor-yasirsultan.github.io/ysgf/mapLondon.png" alt="mapLondon" width="80%"><br><br>
-<img src="https://professor-yasirsultan.github.io/ysgf/mapWorld.png" alt="mapWorld" width="80%">
 
-  <div class="footer-note">© 2026 YSGF — Yasir Sultan Geodesic Flux</div>
-</div>
+        <div class="hero">
+            <!-- <div class="badge">✦ YSGF v1.2 · Geodesic Rotational Normalization ✦</div> -->
+            <h1>Yasir Sultan Geodesic Flux</h1>
+            <div class="tagline">redefining spherical perception · dynamic flux alignment</div>
+            <div class="action-buttons">
+                <a href="https://professor-yasirsultan.github.io/ysgf/api" class="btn btn-primary" target="_blank">🌍
+                    Live 3D Demo</a>
+                <!-- <span class="lang-btn coming-soon">🗺️ Interactive 3D/2D map (coming soon)</span> -->
+                <span class="lang-btn coming-soon" title="Coming soon – interactive 2D/3D map"
+                    onclick="alert('Interactive map coming soon! Stay tuned.')">
+                    🗺️ Interactive 3D/2D map (coming soon)
+                </span>
+                <a href="https://doi.org/10.5281/zenodo.20104343" class="btn btn-outline" target="_blank">📄 Read Paper
+                    (DOI / Zenodo)</a>
+                <a href="https://professor-yasirsultan.github.io/ysgf/YSGF_v1-2.pdf" class="btn btn-outline"
+                    target="_blank">📄 Read Paper (github)</a>
 
+
+                <a href="https://github.com/professor-yasirsultan/ysgf" class="btn btn-outline" target="_blank">⌨️
+                    GitHub</a>
+            </div>
+        </div>
+
+        <!-- CARDS: all YSGF powers -->
+
+        <div class="cards-grid">
+
+            <div class="card">
+                <!-- <div class="card-icon">⚡</div> -->
+                <h3>⚡ Shortest Path</h3>
+                <p>Find the shortest path from your location to any place in the world intuitively, using flux lines
+                    (red lines in the image above). Optimal routes for logistics.</p>
+            </div>
+
+            <div class="card">
+                <!-- <div class="card-icon">⚡</div> -->
+                <h3>⚡ True Distances</h3>
+                <p>Get the true distances from your location to any place in the world intuitively. using equal distance
+                    lines (green lines in the image above).</p>
+            </div>
+
+            <div class="card">
+                <!-- <div class="card-icon">⚡</div> -->
+                <h3>🧠 Great Educational Tool</h3>
+                <p>Help student to understand geography, maps, and math effortlessly.</p>
+            </div>
+
+
+            <div class="card">
+                <!-- <div class="card-icon">⚡</div> -->
+                <h3>💸 Free For Everyone</h3>
+                <p>Free to use for you, anywhere and anytime.</p>
+            </div>
+
+
+            <div class="card">
+                <h3>🌀 Geodesic Rotational Normalization</h3>
+                <p>Dynamic coordinate rotation turns spherical great-circle paths into rectified straight lines.</p>
+            </div>
+
+            <div class="card">
+                <h3>📍 Observer‑Centric Mapping</h3>
+                <p>Any city or point becomes the north pole. Realign the entire geodesic grid instantly.</p>
+            </div>
+
+            <div class="card">
+                <h3>🌐 Real Globe 2D & 3D Fusion</h3>
+                <p>Seamless overlay on Mercator maps (2D) + WebGL/Three.js 3D globe rendering.</p>
+            </div>
+            <div class="card">
+                <h3>🚀✈️🚚 Logistics Optimized</h3>
+                <p>Autonomous aviation, fleet routing, real‑time trajectory planning.</p>
+            </div>
+            <div class="card">
+                <h3>📐 Curvature‑Aware Intelligence</h3>
+                <p>Preserves true spherical curvature while providing intuitive straight-line navigation.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"></div>
+                <h3>⚙️ High‑Performance real-time Engine</h3>
+                <p>Dynamic grid regeneration at real-time.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"></div>
+                <h3>🎛️ Flexible API & Flux Control</h3>
+                <p>Ready to be used with any website.</p>
+            </div>
+        </div>
+
+        <div class="highlight-features">
+            <span>✅ Real globe 2D/3D</span> <span>✈️ Best routes & shortest path</span> <span>📏 True distances</span>
+            <span>📐 Curvature preserved</span> <span>🚚 Logistics optimized</span> <span>⚡ Real-time geodesics</span>
+        </div>
+
+        <!-- ✨ Geodesic Gallery — image cards with placeholders -->
+        <div class="gallery-section">
+            <div class="section-title">✨ YSGF real examples</div>
+
+            <div class="gallery-cards-grid" id="galleryCardsGrid">
+                <!-- Each gallery card: image placeholder + title + description. Replace src with actual images -->
+
+                <div class="gallery-card"
+                    data-img-src="https://professor-yasirsultan.github.io/ysgf/img/london_globe.jpg">
+                    <img class="gallery-img" src="https://professor-yasirsultan.github.io/ysgf/img/london_globe.jpg"
+                        alt="3D globe with geodesic flux lines centered on London" loading="lazy">
+                    <div class="gallery-card-content">
+                        <h3>🌐 3D Interactive Globes (Spheres)</h3>
+                        <p>3D Interactive Globes of London. You Can choose from list of cities, or enter any
+                            Coordinates.</p>
+                        <span class="placeholder-badge">Click to enlarge</span>
+                    </div>
+                </div>
+
+
+                <div class="gallery-card"
+                    data-img-src="https://professor-yasirsultan.github.io/ysgf/img/london_map.jpg">
+                    <img class="gallery-img" src="https://professor-yasirsultan.github.io/ysgf/img/london_map.jpg"
+                        alt="2D YSGF map projection of London" loading="lazy">
+                    <div class="gallery-card-content">
+                        <h3>🗺️ 2D Maps</h3>
+                        <p>2D YSGF map of London. You Can choose from list of cities, or enter any Coordinates.</p>
+                        <span class="placeholder-badge">Click to enlarge</span>
+                    </div>
+                </div>
+
+
+
+
+                <div class="gallery-card" data-img-src="https://professor-yasirsultan.github.io/ysgf/img/options.jpg">
+                    <img class="gallery-img" src="https://professor-yasirsultan.github.io/ysgf/img/options.jpg"
+                        alt="YSGF settings panel – lighting, style, city selection" loading="lazy">
+                    <div class="gallery-card-content">
+                        <h3>⚙️ Many Settings and Cities</h3>
+                        <p>Options for lighting , Style, Maps, etc.<br>
+                            Many Cities , You can enter any city coordinate</p>
+                        <span class="placeholder-badge">Click to enlarge</span>
+                    </div>
+                </div>
+
+
+
+
+                <div class="gallery-card" data-img-src="https://professor-yasirsultan.github.io/ysgf/img/light.jpg">
+                    <img class="gallery-img" src="https://professor-yasirsultan.github.io/ysgf/img/light.jpg"
+                        alt="London Globe" loading="lazy">
+                    <div class="gallery-card-content">
+                        <h3>💡 Lighting</h3>
+                        <p>Choose lighting option for immersive experience.</p>
+                        <span class="placeholder-badge">Click to enlarge</span>
+                    </div>
+                </div>
+
+
+
+
+                <div class="gallery-card" data-img-src="https://professor-yasirsultan.github.io/ysgf/img/maps.jpg">
+                    <img class="gallery-img" src="https://professor-yasirsultan.github.io/ysgf/img/maps.jpg"
+                        alt="London Globe" loading="lazy">
+                    <div class="gallery-card-content">
+                        <h3>🗺️ Many Maps</h3>
+                        <p>Maps for day and night. you can upload your own (UV) map.</p>
+                        <span class="placeholder-badge">Click to enlarge</span>
+                    </div>
+                </div>
+
+
+
+
+                <div class="gallery-card" data-img-src="https://professor-yasirsultan.github.io/ysgf/img/style.jpg">
+                    <img class="gallery-img" src="https://professor-yasirsultan.github.io/ysgf/img/style.jpg"
+                        alt="London Globe" loading="lazy">
+                    <div class="gallery-card-content">
+                        <h3>🎨 Style</h3>
+                        <p>Choose any color, any number of lines, and more.</p>
+                        <span class="placeholder-badge">Click to enlarge</span>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+
+        </div>
+
+        <div class="footnote">
+            📄 Yasir Sultan (2026).
+        </div>
+    </div>
+
+    <!-- lightbox modal for enlarged images -->
+    <div id="lightbox" class="lightbox-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeLightbox">✕</span>
+            <img id="lightboxImg" src="" alt="enlarged view">
+        </div>
+    </div>
+
+    <script>
+        // ========== DARK/LIGHT MODE ==========
+        const themeToggle = document.getElementById('themeToggleBtn');
+        const themeLabel = document.getElementById('themeLabel');
+        const bodyElem = document.body;
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                bodyElem.classList.add('light');
+                bodyElem.classList.remove('dark');
+                themeLabel.innerText = 'Dark mode';
+                localStorage.setItem('ysgf_theme', 'light');
+            } else {
+                bodyElem.classList.remove('light');
+                bodyElem.classList.add('dark');
+                themeLabel.innerText = 'Light mode';
+                localStorage.setItem('ysgf_theme', 'dark');
+            }
+        }
+
+        // Load saved theme, default to dark if none
+        const savedTheme = localStorage.getItem('ysgf_theme');
+        if (savedTheme === 'light') {
+            setTheme('light');
+        } else {
+            setTheme('dark'); // default dark
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (bodyElem.classList.contains('dark')) setTheme('light');
+            else setTheme('dark');
+        });
+
+        // ========== BANNER ERROR FALLBACK ==========
+        const bannerImg = document.querySelector('.banner-image');
+        if (bannerImg) {
+            bannerImg.addEventListener('error', () => {
+                bannerImg.src = 'https://placehold.co/1600x900/1f5a74/white?text=YSGF+Banner';
+            });
+        }
+
+        // ========== LIGHTBOX FOR GALLERY CARDS ==========
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const closeLightbox = document.getElementById('closeLightbox');
+        function openLightbox(imgSrc) {
+            lightboxImg.src = imgSrc;
+            lightbox.classList.add('active');
+        }
+        function closeModal() {
+            lightbox.classList.remove('active');
+        }
+        closeLightbox.addEventListener('click', closeModal);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) closeModal();
+        });
+
+        const galleryCards = document.querySelectorAll('.gallery-card');
+        galleryCards.forEach(card => {
+            const imgElement = card.querySelector('.gallery-img');
+            let largeSrc = card.getAttribute('data-img-src');
+            if (!largeSrc && imgElement) largeSrc = imgElement.src;
+            card.addEventListener('click', (e) => {
+                if (largeSrc) openLightbox(largeSrc);
+                else if (imgElement) openLightbox(imgElement.src);
+            });
+        });
+
+        // ========== ARABIC BUTTON REDIRECT ==========
+        const arabicBtn = document.getElementById('arabicBtn');
+        if (arabicBtn) {
+            arabicBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = '/ysgf/ar';
+            });
+        }
+
+        console.log("YSGF Homepage | Dark mode default | Language switcher ready");
+    </script>
 </body>
+
 </html>
