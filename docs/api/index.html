@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>YSGF | 2D/3D Geodesic Flux – Equal Distance Step | Enhanced UI</title>
+    <title>YSGF | Yasir Sultan Geodesic Flux</title>
     <style>
         * {
             margin: 0;
@@ -32,9 +33,10 @@
             gap: 8px;
             z-index: 200;
             border: 1px solid rgba(255, 200, 100, 0.6);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
             pointer-events: auto;
         }
+
         .mode-btn {
             background: rgba(20, 30, 55, 0.85);
             border: none;
@@ -50,11 +52,13 @@
             text-align: center;
             min-width: 70px;
         }
+
         .mode-btn.active {
             background: #ffaa44;
             color: #0a0f1f;
             box-shadow: 0 0 10px #ffaa66;
         }
+
         .mode-btn:hover:not(.active) {
             background: #ffaa66;
             color: #0a0f1f;
@@ -71,12 +75,14 @@
             display: none;
             background: #010208;
         }
+
         #worldCanvas {
             width: 100%;
             height: 100%;
             display: block;
             cursor: crosshair;
         }
+
         /* 3D container */
         #canvas3dContainer {
             position: fixed;
@@ -102,6 +108,7 @@
             justify-content: center;
             transition: opacity 0.7s ease;
         }
+
         .welcome-card {
             position: relative;
             background: rgba(0, 0, 0, 0.75);
@@ -114,74 +121,211 @@
             max-width: 90vw;
             text-align: center;
         }
-        .welcome-card h1 { font-size: clamp(1.8rem, 8vw, 3rem); letter-spacing: 6px; text-shadow: 0 0 20px #ffaa44; color: #ffefcf; }
-        .welcome-card h2 { font-size: clamp(1rem, 5vw, 2rem); font-weight: 400; text-shadow: 0 0 20px #ffaa44; color: #ffe0b5; }
+
+        .welcome-card h1 {
+            font-size: clamp(1.8rem, 8vw, 3rem);
+            letter-spacing: 6px;
+            text-shadow: 0 0 20px #ffaa44;
+            color: #ffefcf;
+        }
+
+        .welcome-card h2 {
+            font-size: clamp(1rem, 5vw, 2rem);
+            font-weight: 400;
+            text-shadow: 0 0 20px #ffaa44;
+            color: #ffe0b5;
+        }
+
         .close-welcome-card {
-            position: absolute; top: -12px; right: -12px;
-            background: rgba(0,0,0,0.8); width: 42px; height: 42px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            font-size: 1.8rem; color: #ffaa66; border: 1px solid #ffaa66;
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: rgba(0, 0, 0, 0.8);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: #ffaa66;
+            border: 1px solid #ffaa66;
             transition: 0.2s;
         }
-        .close-welcome-card:hover { background: #ff8c44; color: #111; transform: scale(1.05); }
+
+        .close-welcome-card:hover {
+            background: #ff8c44;
+            color: #111;
+            transform: scale(1.05);
+        }
+
         @keyframes floatGlow {
-            0% { transform: translateY(0px); box-shadow: 0 0 15px rgba(255,180,70,0.3); }
-            100% { transform: translateY(-8px); box-shadow: 0 0 35px rgba(255,180,70,0.7); }
+            0% {
+                transform: translateY(0px);
+                box-shadow: 0 0 15px rgba(255, 180, 70, 0.3);
+            }
+
+            100% {
+                transform: translateY(-8px);
+                box-shadow: 0 0 35px rgba(255, 180, 70, 0.7);
+            }
         }
+
         .compact-header {
-            position: fixed; top: max(12px, env(safe-area-inset-top,12px)); right: max(12px, env(safe-area-inset-right,12px));
-            background: rgba(0,0,0,0.65); backdrop-filter: blur(12px); border-radius: 28px;
-            padding: 6px 18px; border: 1px solid rgba(255,200,100,0.6); z-index: 110;
-            pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            position: fixed;
+            top: max(12px, env(safe-area-inset-top, 12px));
+            right: max(12px, env(safe-area-inset-right, 12px));
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 6px 18px;
+            border: 1px solid rgba(255, 200, 100, 0.6);
+            z-index: 110;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
-        .compact-header h3 { font-size: clamp(0.7rem,4vw,1rem); letter-spacing: 2px; color: #ffddbb; }
-        .compact-header p { font-size: clamp(0.55rem,3.5vw,0.7rem); color: #ffcc99; }
+
+        .compact-header h3 {
+            font-size: clamp(0.7rem, 4vw, 1rem);
+            letter-spacing: 2px;
+            color: #ffddbb;
+        }
+
+        .compact-header p {
+            font-size: clamp(0.55rem, 3.5vw, 0.7rem);
+            color: #ffcc99;
+            text-align: center;
+        }
+
+        .compact-URL {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 6px 18px;
+            border: 1px solid rgba(255, 200, 100, 0.6);
+            z-index: 110;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .compact-URL h3 {
+            font-size: clamp(0.7rem, 4vw, 1rem);
+            letter-spacing: 2px;
+            color: #ffddbb;
+        }
+
+        .compact-URL p {
+            font-size: clamp(0.55rem, 3.5vw, 0.7rem);
+            color: #ffcc99;
+        }
+
+
         .settings-toggle {
-            position: fixed; top: max(12px, env(safe-area-inset-top,12px)); left: max(12px, env(safe-area-inset-left,12px));
-            background: rgba(12,18,28,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,180,80,0.7);
-            border-radius: 48px; padding: 8px 20px; z-index: 100; cursor: pointer;
-            font-size: clamp(0.9rem,4.5vw,1.4rem); font-weight: bold; display: flex; align-items: center;
-            gap: 8px; color: #ffdd99; transition: 0.2s; white-space: nowrap;
+            position: fixed;
+            top: max(12px, env(safe-area-inset-top, 12px));
+            left: max(12px, env(safe-area-inset-left, 12px));
+            background: rgba(12, 18, 28, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 180, 80, 0.7);
+            border-radius: 48px;
+            padding: 8px 20px;
+            z-index: 100;
+            cursor: pointer;
+            font-size: clamp(0.9rem, 4.5vw, 1.4rem);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffdd99;
+            transition: 0.2s;
+            white-space: nowrap;
         }
-        .settings-toggle:hover { background: #ff8c44cc; color: #0b0b1a; transform: scale(1.02); }
-        
+
+        .settings-toggle:hover {
+            background: #ff8c44cc;
+            color: #0b0b1a;
+            transform: scale(1.02);
+        }
+
         /* ----- SIDE MENU & CONTEXT PANELS – NO HORIZONTAL SCROLL, ENHANCED VERTICAL SCROLLBAR ----- */
         .side-menu {
-            position: fixed; top: 0; left: 0; width: min(85vw, 320px); height: 100vh;
-            background: rgba(8, 12, 24, 0.96); backdrop-filter: blur(20px);
-            border-right: 2px solid rgba(255,170,80,0.6); z-index: 150;
-            transform: translateX(-100%); transition: transform 0.35s cubic-bezier(0.2,0.9,0.4,1.1);
-            display: flex; flex-direction: column;
-            overflow-x: hidden;    /* remove horizontal scroll */
-            overflow-y: auto;      /* vertical scroll only when needed */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: min(85vw, 320px);
+            height: 100vh;
+            background: rgba(8, 12, 24, 0.96);
+            backdrop-filter: blur(20px);
+            border-right: 2px solid rgba(255, 170, 80, 0.6);
+            z-index: 150;
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            /* remove horizontal scroll */
+            overflow-y: auto;
+            /* vertical scroll only when needed */
         }
+
         /* Custom vertical scrollbar for side-menu */
         .side-menu::-webkit-scrollbar {
             width: 6px;
         }
+
         .side-menu::-webkit-scrollbar-track {
             background: #0f1222;
             border-radius: 10px;
         }
+
         .side-menu::-webkit-scrollbar-thumb {
             background: #ffaa66;
             border-radius: 10px;
             transition: 0.2s;
         }
+
         .side-menu::-webkit-scrollbar-thumb:hover {
             background: #ffcc88;
             box-shadow: 0 0 6px #ffaa66;
         }
-        
-        .side-menu.open { transform: translateX(0); }
-        .menu-header {
-            flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 20px 12px 24px; border-bottom: 2px solid #ffaa66;
-            background: rgba(8,12,24,0.98);
+
+        .side-menu.open {
+            transform: translateX(0);
         }
-        .menu-header h3 { color: #ffefcf; font-size: 1.1rem; letter-spacing: 1px; }
-        .close-menu-btn { background: none; border: none; font-size: 26px; cursor: pointer; color: #ffcc99; }
-        .close-menu-btn:hover { color: #ffaa66; }
+
+        .menu-header {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px 12px 24px;
+            border-bottom: 2px solid #ffaa66;
+            background: rgba(8, 12, 24, 0.98);
+        }
+
+        .menu-header h3 {
+            color: #ffefcf;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .close-menu-btn {
+            background: none;
+            border: none;
+            font-size: 26px;
+            cursor: pointer;
+            color: #ffcc99;
+        }
+
+        .close-menu-btn:hover {
+            color: #ffaa66;
+        }
+
         .menu-buttons {
             flex: 1;
             display: flex;
@@ -191,135 +335,344 @@
             gap: 14px;
             margin: 20px 0;
             overflow-y: auto;
-            overflow-x: hidden;    /* no horizontal scroll */
+            overflow-x: hidden;
+            /* no horizontal scroll */
             padding-right: 4px;
         }
+
         /* enhanced vertical scrollbar for menu-buttons */
         .menu-buttons::-webkit-scrollbar {
             width: 5px;
         }
+
         .menu-buttons::-webkit-scrollbar-track {
             background: #1a1e2c;
             border-radius: 8px;
         }
+
         .menu-buttons::-webkit-scrollbar-thumb {
             background: #ffaa66;
             border-radius: 8px;
         }
+
         .menu-buttons::-webkit-scrollbar-thumb:hover {
             background: #ffcc77;
         }
-        
+
         .cat-btn {
-            background: rgba(25,35,55,0.9); border: 1.5px solid #ffaa66; border-radius: 60px;
-            padding: 10px 0; font-size: 0.95rem; font-weight: bold; color: #fff0dd;
-            cursor: pointer; text-align: center; transition: 0.2s;
+            background: rgba(25, 35, 55, 0.9);
+            border: 1.5px solid #ffaa66;
+            border-radius: 60px;
+            padding: 10px 0;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #fff0dd;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
         }
-        .cat-btn:hover { background: #ff8c44; color: #0f0f1f; transform: scale(1.02); }
-        
+
+        .cat-btn:hover {
+            background: #ff8c44;
+            color: #0f0f1f;
+            transform: scale(1.02);
+        }
+
         .context-panel {
-            position: fixed; top: 0; left: 0; width: min(85vw,320px); height: 100vh;
-            background: rgba(10,15,28,0.98); backdrop-filter: blur(24px);
-            border-right: 2px solid rgba(255,170,80,0.9); z-index: 160;
-            transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: min(85vw, 320px);
+            height: 100vh;
+            background: rgba(10, 15, 28, 0.98);
+            backdrop-filter: blur(24px);
+            border-right: 2px solid rgba(255, 170, 80, 0.9);
+            z-index: 160;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             overflow-y: auto;
-            overflow-x: hidden;   /* remove horizontal scroll */
-            display: none; flex-direction: column; border-radius: 0 28px 28px 0;
+            overflow-x: hidden;
+            /* remove horizontal scroll */
+            display: none;
+            flex-direction: column;
+            border-radius: 0 28px 28px 0;
         }
+
         /* Custom vertical scrollbar for context-panel (enhanced) */
         .context-panel::-webkit-scrollbar {
             width: 6px;
         }
+
         .context-panel::-webkit-scrollbar-track {
             background: #0c1020;
             border-radius: 12px;
         }
+
         .context-panel::-webkit-scrollbar-thumb {
             background: #ffaa66;
             border-radius: 12px;
             transition: all 0.2s;
         }
+
         .context-panel::-webkit-scrollbar-thumb:hover {
             background: #ffcc88;
-            box-shadow: 0 0 6px rgba(255,170,102,0.8);
+            box-shadow: 0 0 6px rgba(255, 170, 102, 0.8);
         }
-        
-        .context-panel.active { display: flex; transform: translateX(0); }
+
+        .context-panel.active {
+            display: flex;
+            transform: translateX(0);
+        }
+
         .panel-header {
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid #ffaa66; padding: 14px 20px 10px 24px;
-            background: rgba(6,10,20,0.9); position: sticky; top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ffaa66;
+            padding: 14px 20px 10px 24px;
+            background: rgba(6, 10, 20, 0.9);
+            position: sticky;
+            top: 0;
         }
-        .panel-header h3 { font-size: 1rem; letter-spacing: 1px; color: #ffe6c4; }
+
+        .panel-header h3 {
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: #ffe6c4;
+        }
+
         .close-panel-btn {
-            background: rgba(0,0,0,0.6); border: 1px solid #ffaa66; border-radius: 40px;
-            width: 32px; height: 32px; font-size: 22px; cursor: pointer; color: #ffcc99;
-            text-align: center; line-height: 1;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #ffaa66;
+            border-radius: 40px;
+            width: 32px;
+            height: 32px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #ffcc99;
+            text-align: center;
+            line-height: 1;
         }
+
         .context-panel-content {
-            padding: 14px 18px 24px; flex: 1; font-size: 0.8rem; color: #f0f0ea;
-            overflow-x: hidden;   /* ensure no horizontal overflow */
+            padding: 14px 18px 24px;
+            flex: 1;
+            font-size: 0.8rem;
+            color: #f0f0ea;
+            overflow-x: hidden;
+            /* ensure no horizontal overflow */
             word-wrap: break-word;
         }
-        .continent-group { margin-bottom: 18px; }
+
+        .continent-group {
+            margin-bottom: 18px;
+        }
+
         .continent-title {
-            font-size: 0.9rem; font-weight: bold; color: #ffddbb;
-            border-left: 4px solid #ffaa66; padding-left: 10px; margin: 10px 0 6px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #ffddbb;
+            border-left: 4px solid #ffaa66;
+            padding-left: 10px;
+            margin: 10px 0 6px;
         }
-        .city-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .city-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
         .city-btn {
-            background: #2c3e66; border: none; color: #fef6e0; padding: 5px 12px;
-            border-radius: 32px; cursor: pointer; font-size: 0.7rem; font-weight: 500;
+            background: #2c3e66;
+            border: none;
+            color: #fef6e0;
+            padding: 5px 12px;
+            border-radius: 32px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 500;
         }
-        .city-btn.city-selected { background: #ffaa44; color: #0a0f1f; box-shadow: 0 0 6px #ffaa66; font-weight: bold; }
-        .coord-input { display: flex; gap: 8px; margin: 14px 0; flex-wrap: wrap; }
+
+        .city-btn.city-selected {
+            background: #ffaa44;
+            color: #0a0f1f;
+            box-shadow: 0 0 6px #ffaa66;
+            font-weight: bold;
+        }
+
+        .coord-input {
+            display: flex;
+            gap: 8px;
+            margin: 14px 0;
+            flex-wrap: wrap;
+        }
+
         .coord-input input {
-            background: #0f1722; border: 1px solid #ffaa66; color: white;
-            padding: 5px 8px; border-radius: 24px; width: 100px; font-size: 0.75rem;
+            background: #0f1722;
+            border: 1px solid #ffaa66;
+            color: white;
+            padding: 5px 8px;
+            border-radius: 24px;
+            width: 100px;
+            font-size: 0.75rem;
         }
+
         .action-btn {
-            background: #ff8c44; border: none; padding: 5px 14px; border-radius: 28px;
-            font-weight: bold; cursor: pointer; font-size: 0.7rem; font-family: monospace;
+            background: #ff8c44;
+            border: none;
+            padding: 5px 14px;
+            border-radius: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-family: monospace;
         }
-        .reset-btn { background: #4a5b6e; color: white; }
+
+        .reset-btn {
+            background: #4a5b6e;
+            color: white;
+        }
+
         .status-box {
-            background: #000000aa; border-radius: 18px; padding: 8px;
-            font-size: 0.65rem; margin: 12px 0; text-align: center; color: #ffefcf;
+            background: #000000aa;
+            border-radius: 18px;
+            padding: 8px;
+            font-size: 0.65rem;
+            margin: 12px 0;
+            text-align: center;
+            color: #ffefcf;
         }
-        .slider-container { margin: 14px 0; }
+
+        .slider-container {
+            margin: 14px 0;
+        }
+
         .slider-container label {
-            display: flex; justify-content: space-between; font-size: 0.7rem;
-            margin-bottom: 5px; color: #ffefcf;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            margin-bottom: 5px;
+            color: #ffefcf;
         }
-        input[type="range"] { width: 100%; cursor: pointer; background: #ffaa66; height: 3px; border-radius: 5px; }
-        .color-row { display: flex; justify-content: space-between; align-items: center; margin: 14px 0; gap: 8px; font-size: 0.7rem; color: #ffefcf; }
-        input[type="color"] { width: 42px; height: 30px; background: #111; border: 2px solid #ffaa66; border-radius: 12px; }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+            background: #ffaa66;
+            height: 3px;
+            border-radius: 5px;
+        }
+
+        .color-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 14px 0;
+            gap: 8px;
+            font-size: 0.7rem;
+            color: #ffefcf;
+        }
+
+        input[type="color"] {
+            width: 42px;
+            height: 30px;
+            background: #111;
+            border: 2px solid #ffaa66;
+            border-radius: 12px;
+        }
+
         .info-text {
-            background: #00000055; padding: 10px; border-radius: 18px;
-            margin: 10px 0; border-left: 3px solid #ffaa66; font-size: 0.7rem;
+            background: #00000055;
+            padding: 10px;
+            border-radius: 18px;
+            margin: 10px 0;
+            border-left: 3px solid #ffaa66;
+            font-size: 0.7rem;
         }
+
         .info-text a {
-            display: block; text-decoration: none; color: #ffddbb;
-            background: rgba(255,170,102,0.15); padding: 5px 8px; border-radius: 24px;
-            margin: 6px 0; width: fit-content; font-size: 0.7rem;
+            display: block;
+            text-decoration: none;
+            color: #ffddbb;
+            background: rgba(255, 170, 102, 0.15);
+            padding: 5px 8px;
+            border-radius: 24px;
+            margin: 6px 0;
+            width: fit-content;
+            font-size: 0.7rem;
         }
+
         .map-card {
-            background: rgba(20,28,44,0.9); border-radius: 18px; padding: 8px 12px;
-            border-left: 4px solid #ffaa66; cursor: pointer; margin-bottom: 8px;
+            background: rgba(20, 28, 44, 0.9);
+            border-radius: 18px;
+            padding: 8px 12px;
+            border-left: 4px solid #ffaa66;
+            cursor: pointer;
+            margin-bottom: 8px;
         }
-        .map-title { font-size: 0.75rem; font-weight: bold; color: #ffefcf; }
-        .upload-area { margin: 12px 0; background: #0a0f1c; border-radius: 24px; padding: 8px; text-align: center; border: 1px dashed #ffaa66; font-size: 0.7rem; }
-        .angle-row { display: flex; gap: 10px; margin: 10px 0; font-size: 0.7rem; }
-        .note-small { font-size: 0.6rem; opacity: 0.7; text-align: center; margin-top: 10px; color: #ccddee; }
+
+        .map-title {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #ffefcf;
+        }
+
+        .upload-area {
+            margin: 12px 0;
+            background: #0a0f1c;
+            border-radius: 24px;
+            padding: 8px;
+            text-align: center;
+            border: 1px dashed #ffaa66;
+            font-size: 0.7rem;
+        }
+
+        .angle-row {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 0.7rem;
+        }
+
+        .note-small {
+            font-size: 0.6rem;
+            opacity: 0.7;
+            text-align: center;
+            margin-top: 10px;
+            color: #ccddee;
+        }
     </style>
 </head>
+
 <body>
-    <div id="welcomeScreen"><div class="welcome-card"><div class="close-welcome-card" id="closeWelcomeBtn">✖</div><h1>YSGF</h1><h2>Yasir Sultan</h2><h2>Geodesic Flux</h2></div></div>
-    <div class="compact-header"><h3>✦ YSGF ✦</h3><p>Yasir Sultan<br>Geodesic Flux</p></div>
+    <div id="welcomeScreen">
+        <div class="welcome-card">
+            <div class="close-welcome-card" id="closeWelcomeBtn">✖</div>
+            <h1>YSGF</h1>
+            <h2>Yasir Sultan</h2>
+            <h2>Geodesic Flux</h2>
+        </div>
+    </div>
+    <div class="compact-header">
+        <h3>✦ YSGF ✦</h3>
+        <p>Yasir Sultan<br>Geodesic Flux</p>
+    </div>
+    <div class="compact-URL">
+        <p>https://professor-yasirsultan.github.io/ysgf</p>
+    </div>
     <div class="settings-toggle" id="settingsToggleBtn">⚙️ SETTINGS</div>
-    <div id="sideMenu" class="side-menu"><div class="menu-header"><h3>⚡ YSGF Settings</h3><button class="close-menu-btn" id="closeSideMenuBtn">✖</button></div><div class="menu-buttons"><button id="btnCitiesCat" class="cat-btn">🌐 CITIES</button><button id="btnStyleCat" class="cat-btn">🎨 STYLE</button><button id="btnLightsCat" class="cat-btn">💡 LIGHTING</button><button id="btnMapCat" class="cat-btn">🗺️ MAP IMAGE</button><button id="btnInfoCat" class="cat-btn">ℹ️ INFO</button></div></div>
+    <div id="sideMenu" class="side-menu">
+        <div class="menu-header">
+            <h3>⚡ YSGF Settings</h3><button class="close-menu-btn" id="closeSideMenuBtn">✖</button>
+        </div>
+        <div class="menu-buttons"><button id="btnCitiesCat" class="cat-btn">🌐 CITIES</button><button id="btnStyleCat"
+                class="cat-btn">🎨 STYLE</button><button id="btnLightsCat" class="cat-btn">💡 LIGHTING</button><button
+                id="btnMapCat" class="cat-btn">🗺️ MAP IMAGE</button><button id="btnInfoCat" class="cat-btn">ℹ️
+                INFO</button></div>
+    </div>
     <div id="contextPanel" class="context-panel"></div>
-    
+
     <div class="mode-toggle-bar">
         <button id="mode2dBtn" class="mode-btn">🗺️ 2D</button>
         <button id="mode3dBtn" class="mode-btn active">🌍 3D</button>
@@ -328,7 +681,8 @@
     <div id="canvas3dContainer"></div>
     <div id="canvas2dContainer"><canvas id="worldCanvas"></canvas></div>
 
-    <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/" } }</script>
+    <script
+        type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/" } }</script>
     <script type="module">
         import * as THREE from 'three';
         import { Line2 } from 'three/addons/lines/Line2.js';
@@ -345,13 +699,13 @@
         let currentMapURL = 'https://professor-yasirsultan.github.io/ysgf/img/earth_day_4096.jpg';
         let currentMapTexture = null;
         let currentMapImageObj = new Image();
-        
+
         // Style props
         let globalLineWidth = 1.2;
         let globalFluxColor = '#ff7b72';
         let globalParallelColor = '#6effb0';
         let globalGridOpacity = 1.0;
-        
+
         // ---------- 3D SPECIFIC (enhanced with cones & ring from v3.0.10) ----------
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -361,22 +715,22 @@
         renderer.setPixelRatio(window.devicePixelRatio);
         document.getElementById('canvas3dContainer').appendChild(renderer.domElement);
         const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true; controls.dampingFactor = 0.05; controls.enableZoom = true; controls.target.set(0,0,0);
-        
+        controls.enableDamping = true; controls.dampingFactor = 0.05; controls.enableZoom = true; controls.target.set(0, 0, 0);
+
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
         scene.add(ambientLight);
         const sunLight = new THREE.DirectionalLight(0xfff5e0, 1.2);
-        sunLight.position.set(5,10,7); sunLight.target.position.set(0,0,0);
+        sunLight.position.set(5, 10, 7); sunLight.target.position.set(0, 0, 0);
         scene.add(sunLight); scene.add(sunLight.target);
-        function updateSunDirection(az, el) { const radAz=az*Math.PI/180, radEl=el*Math.PI/180; const d=12; sunLight.position.set(d*Math.cos(radEl)*Math.cos(radAz), d*Math.sin(radEl), d*Math.cos(radEl)*Math.sin(radAz)); sunLight.target.updateMatrixWorld(); }
+        function updateSunDirection(az, el) { const radAz = az * Math.PI / 180, radEl = el * Math.PI / 180; const d = 12; sunLight.position.set(d * Math.cos(radEl) * Math.cos(radAz), d * Math.sin(radEl), d * Math.cos(radEl) * Math.sin(radAz)); sunLight.target.updateMatrixWorld(); }
         let currentAzimuth = 48, currentElevation = 38; updateSunDirection(currentAzimuth, currentElevation);
-        
+
         const earthRadius = 5;
         const earthGeo = new THREE.SphereGeometry(earthRadius, 128, 128);
         const earthMat = new THREE.MeshPhongMaterial({ color: 0xaaaaaa, shininess: 6 });
         const earthMesh = new THREE.Mesh(earthGeo, earthMat);
         const coordGroup = new THREE.Group();
-        
+
         // ====== v3.0.10 extras: north/south cones & equator ring ======
         const coneGeo = new THREE.ConeGeometry(0.22, 0.62, 48);
         const northCone = new THREE.Mesh(coneGeo, new THREE.MeshStandardMaterial({ color: 0xdd3b3b, emissive: 0x331100 }));
@@ -385,87 +739,90 @@
         southCone.position.set(0, -earthRadius - 0.36, 0);
         const equatorRing = new THREE.Mesh(new THREE.TorusGeometry(earthRadius + 0.02, 0.012, 64, 400), new THREE.MeshStandardMaterial({ color: 0xffaa55, emissive: 0x331c00, transparent: true, opacity: 0.45 }));
         equatorRing.rotation.x = Math.PI / 2;
-        
-        function toVec3(lonRad, latRad, r = earthRadius+0.045) { return new THREE.Vector3(r * Math.cos(latRad) * Math.cos(-lonRad), r * Math.sin(latRad), r * Math.cos(latRad) * Math.sin(-lonRad)); }
+
+        function toVec3(lonRad, latRad, r = earthRadius + 0.045) { return new THREE.Vector3(r * Math.cos(latRad) * Math.cos(-lonRad), r * Math.sin(latRad), r * Math.cos(latRad) * Math.sin(-lonRad)); }
         let fluxLines = [], sameDistanceLines = [], extraLines = [];
-        function rebuildFluxLines(cnt) { fluxLines.forEach(l => coordGroup.remove(l)); fluxLines = []; const lonStep = (Math.PI*2)/cnt; for(let i=0;i<cnt;i++){ const lon = i*lonStep; const pos=[]; for(let j=0;j<=80;j++){ const t=j/80, lat=-Math.PI/2+0.01 + t*(Math.PI-0.02); const p=toVec3(lon,lat); pos.push(p.x,p.y,p.z); } const geom = new LineGeometry(); geom.setPositions(pos); const mat = new LineMaterial({ color: globalFluxColor, linewidth: globalLineWidth, transparent: true, opacity: globalGridOpacity }); mat.resolution.set(window.innerWidth,window.innerHeight); const line = new Line2(geom,mat); coordGroup.add(line); fluxLines.push(line); } apply3DStyle(); }
-        function rebuildLatitudeCircles(eqDeg) { sameDistanceLines.forEach(l => coordGroup.remove(l)); sameDistanceLines = []; if(eqDeg > 0.01){ for(let lat=90-eqDeg; lat>-90; lat-=eqDeg){ if(Math.abs(lat)<0.01) continue; if(Math.abs(lat)>=89.999) continue; const latRad=lat*Math.PI/180; const pos=[]; for(let k=0;k<=130;k++){ const lonRad=(k/130)*Math.PI*2; const p=toVec3(lonRad,latRad); pos.push(p.x,p.y,p.z); } const geom = new LineGeometry(); geom.setPositions(pos); const mat = new LineMaterial({ color: globalParallelColor, linewidth: globalLineWidth, transparent: true, opacity: globalGridOpacity }); mat.resolution.set(window.innerWidth,window.innerHeight); const line = new Line2(geom,mat); coordGroup.add(line); sameDistanceLines.push(line); } } apply3DStyle(); }
-        function buildEquatorLine() { extraLines.forEach(l=>coordGroup.remove(l)); extraLines=[]; const pos=[]; for(let k=0;k<=130;k++){ const lonRad=(k/130)*Math.PI*2; const p=toVec3(lonRad,0); pos.push(p.x,p.y,p.z); } const geom=new LineGeometry(); geom.setPositions(pos); const mat=new LineMaterial({color:'#ffaa66',linewidth:1.5,transparent:true,opacity:0.95}); mat.resolution.set(window.innerWidth,window.innerHeight); const equatorLine=new Line2(geom,mat); coordGroup.add(equatorLine); extraLines.push(equatorLine); }
-        function apply3DStyle() { fluxLines.forEach(l=>{ if(l.material){ l.material.color.set(globalFluxColor); l.material.linewidth=globalLineWidth; l.material.opacity=globalGridOpacity; l.material.needsUpdate=true; } }); [...sameDistanceLines,...extraLines].forEach(l=>{ if(l.material){ l.material.color.set(globalParallelColor); l.material.linewidth=globalLineWidth; l.material.opacity=globalGridOpacity; l.material.needsUpdate=true; } }); }
-        function update3DRotation(poleLatDeg,poleLonDeg,yRotDeg){ const latRad=poleLatDeg*Math.PI/180; const lonRad=poleLonDeg*Math.PI/180; const targetNorth=new THREE.Vector3(Math.cos(latRad)*Math.cos(-lonRad), Math.sin(latRad), Math.cos(latRad)*Math.sin(-lonRad)).normalize(); const quatPole=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0), targetNorth); const quatYaw=new THREE.Quaternion().setFromAxisAngle(targetNorth, yRotDeg*Math.PI/180); coordGroup.quaternion.copy(quatYaw.clone().multiply(quatPole)); }
-        function set3DPole(lat,lon){ currentPoleLat=lat; currentPoleLon=lon; update3DRotation(currentPoleLat,currentPoleLon,currentYRot); highlightSelectedCityInPanel(); updateStatusMsg(); }
-        function set3DYaw(deg){ currentYRot=Math.min(360,Math.max(0,deg)); update3DRotation(currentPoleLat,currentPoleLon,currentYRot); updateStatusMsg(); if(document.getElementById('yrotSlider')) document.getElementById('yrotSlider').value=currentYRot; if(document.getElementById('yrotValue')) document.getElementById('yrotValue').innerText=currentYRot; }
-        function resetCoordinates(){ currentPoleLat=90; currentPoleLon=0; currentYRot=0; update3DRotation(currentPoleLat,currentPoleLon,currentYRot); updateStatusMsg(); highlightSelectedCityInPanel(); if(document.getElementById('latCtx')) document.getElementById('latCtx').value=90; if(document.getElementById('lonCtx')) document.getElementById('lonCtx').value=0; if(document.getElementById('yrotSlider')) document.getElementById('yrotSlider').value=0; }
-        function updateEqualDistanceStep(value){ let raw=Math.min(10000,Math.max(500,parseInt(value)||500)); currentEqDisValue=raw; currentEqDisDeg=(raw/10000)*90; if(currentMode==='3d') rebuildLatitudeCircles(currentEqDisDeg); if(currentMode==='2d') redraw2D(); if(document.getElementById('eqDisSlider')) document.getElementById('eqDisSlider').value=raw; if(document.getElementById('eqDisDisValue')) document.getElementById('eqDisDisValue').innerText=raw; if(document.getElementById('eqDisDegValue')) document.getElementById('eqDisDegValue').innerText=currentEqDisDeg.toFixed(2); }
-        function updateFluxCount(cnt){ let newCnt=Math.max(1,Math.min(72,parseInt(cnt))); currentFluxCount=newCnt; if(currentMode==='3d') rebuildFluxLines(currentFluxCount); if(currentMode==='2d') redraw2D(); if(document.getElementById('fluxCountVal')) document.getElementById('fluxCountVal').innerText=currentFluxCount; }
-        
-        const earthGroup=new THREE.Group(); earthGroup.add(earthMesh); earthGroup.add(coordGroup); earthGroup.add(northCone); earthGroup.add(southCone); earthGroup.add(equatorRing); scene.add(earthGroup);
+        function rebuildFluxLines(cnt) { fluxLines.forEach(l => coordGroup.remove(l)); fluxLines = []; const lonStep = (Math.PI * 2) / cnt; for (let i = 0; i < cnt; i++) { const lon = i * lonStep; const pos = []; for (let j = 0; j <= 80; j++) { const t = j / 80, lat = -Math.PI / 2 + 0.01 + t * (Math.PI - 0.02); const p = toVec3(lon, lat); pos.push(p.x, p.y, p.z); } const geom = new LineGeometry(); geom.setPositions(pos); const mat = new LineMaterial({ color: globalFluxColor, linewidth: globalLineWidth, transparent: true, opacity: globalGridOpacity }); mat.resolution.set(window.innerWidth, window.innerHeight); const line = new Line2(geom, mat); coordGroup.add(line); fluxLines.push(line); } apply3DStyle(); }
+        function rebuildLatitudeCircles(eqDeg) { sameDistanceLines.forEach(l => coordGroup.remove(l)); sameDistanceLines = []; if (eqDeg > 0.01) { for (let lat = 90 - eqDeg; lat > -90; lat -= eqDeg) { if (Math.abs(lat) < 0.01) continue; if (Math.abs(lat) >= 89.999) continue; const latRad = lat * Math.PI / 180; const pos = []; for (let k = 0; k <= 130; k++) { const lonRad = (k / 130) * Math.PI * 2; const p = toVec3(lonRad, latRad); pos.push(p.x, p.y, p.z); } const geom = new LineGeometry(); geom.setPositions(pos); const mat = new LineMaterial({ color: globalParallelColor, linewidth: globalLineWidth, transparent: true, opacity: globalGridOpacity }); mat.resolution.set(window.innerWidth, window.innerHeight); const line = new Line2(geom, mat); coordGroup.add(line); sameDistanceLines.push(line); } } apply3DStyle(); }
+        function buildEquatorLine() { extraLines.forEach(l => coordGroup.remove(l)); extraLines = []; const pos = []; for (let k = 0; k <= 130; k++) { const lonRad = (k / 130) * Math.PI * 2; const p = toVec3(lonRad, 0); pos.push(p.x, p.y, p.z); } const geom = new LineGeometry(); geom.setPositions(pos); const mat = new LineMaterial({ color: '#ffaa66', linewidth: 1.5, transparent: true, opacity: 0.95 }); mat.resolution.set(window.innerWidth, window.innerHeight); const equatorLine = new Line2(geom, mat); coordGroup.add(equatorLine); extraLines.push(equatorLine); }
+        function apply3DStyle() { fluxLines.forEach(l => { if (l.material) { l.material.color.set(globalFluxColor); l.material.linewidth = globalLineWidth; l.material.opacity = globalGridOpacity; l.material.needsUpdate = true; } });[...sameDistanceLines, ...extraLines].forEach(l => { if (l.material) { l.material.color.set(globalParallelColor); l.material.linewidth = globalLineWidth; l.material.opacity = globalGridOpacity; l.material.needsUpdate = true; } }); }
+        function update3DRotation(poleLatDeg, poleLonDeg, yRotDeg) { const latRad = poleLatDeg * Math.PI / 180; const lonRad = poleLonDeg * Math.PI / 180; const targetNorth = new THREE.Vector3(Math.cos(latRad) * Math.cos(-lonRad), Math.sin(latRad), Math.cos(latRad) * Math.sin(-lonRad)).normalize(); const quatPole = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), targetNorth); const quatYaw = new THREE.Quaternion().setFromAxisAngle(targetNorth, yRotDeg * Math.PI / 180); coordGroup.quaternion.copy(quatYaw.clone().multiply(quatPole)); }
+        function set3DPole(lat, lon) { currentPoleLat = lat; currentPoleLon = lon; update3DRotation(currentPoleLat, currentPoleLon, currentYRot); highlightSelectedCityInPanel(); updateStatusMsg(); }
+        function set3DYaw(deg) { currentYRot = Math.min(360, Math.max(0, deg)); update3DRotation(currentPoleLat, currentPoleLon, currentYRot); updateStatusMsg(); if (document.getElementById('yrotSlider')) document.getElementById('yrotSlider').value = currentYRot; if (document.getElementById('yrotValue')) document.getElementById('yrotValue').innerText = currentYRot; }
+        function resetCoordinates() { currentPoleLat = 90; currentPoleLon = 0; currentYRot = 0; update3DRotation(currentPoleLat, currentPoleLon, currentYRot); updateStatusMsg(); highlightSelectedCityInPanel(); if (document.getElementById('latCtx')) document.getElementById('latCtx').value = 90; if (document.getElementById('lonCtx')) document.getElementById('lonCtx').value = 0; if (document.getElementById('yrotSlider')) document.getElementById('yrotSlider').value = 0; }
+        function updateEqualDistanceStep(value) { let raw = Math.min(10000, Math.max(500, parseInt(value) || 500)); currentEqDisValue = raw; currentEqDisDeg = (raw / 10000) * 90; if (currentMode === '3d') rebuildLatitudeCircles(currentEqDisDeg); if (currentMode === '2d') redraw2D(); if (document.getElementById('eqDisSlider')) document.getElementById('eqDisSlider').value = raw; if (document.getElementById('eqDisDisValue')) document.getElementById('eqDisDisValue').innerText = raw; if (document.getElementById('eqDisDegValue')) document.getElementById('eqDisDegValue').innerText = currentEqDisDeg.toFixed(2); }
+        function updateFluxCount(cnt) { let newCnt = Math.max(1, Math.min(72, parseInt(cnt))); currentFluxCount = newCnt; if (currentMode === '3d') rebuildFluxLines(currentFluxCount); if (currentMode === '2d') redraw2D(); if (document.getElementById('fluxCountVal')) document.getElementById('fluxCountVal').innerText = currentFluxCount; }
+
+        const earthGroup = new THREE.Group(); earthGroup.add(earthMesh); earthGroup.add(coordGroup); earthGroup.add(northCone); earthGroup.add(southCone); earthGroup.add(equatorRing); scene.add(earthGroup);
         buildEquatorLine(); rebuildLatitudeCircles(currentEqDisDeg); rebuildFluxLines(currentFluxCount);
-        const markerPositions=[]; for(let lon=-180;lon<180;lon+=30) for(let lat=-75;lat<=75;lat+=30){ const p=toVec3(lon*Math.PI/180,lat*Math.PI/180,earthRadius+0.07); markerPositions.push(p.x,p.y,p.z); }
-        const markerGeo=new THREE.BufferGeometry(); markerGeo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(markerPositions),3));
-        const markerPoints=new THREE.Points(markerGeo,new THREE.PointsMaterial({color:0xffaa77,size:0.045,transparent:true,opacity:0.55}));
+        const markerPositions = []; for (let lon = -180; lon < 180; lon += 30) for (let lat = -75; lat <= 75; lat += 30) { const p = toVec3(lon * Math.PI / 180, lat * Math.PI / 180, earthRadius + 0.07); markerPositions.push(p.x, p.y, p.z); }
+        const markerGeo = new THREE.BufferGeometry(); markerGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(markerPositions), 3));
+        const markerPoints = new THREE.Points(markerGeo, new THREE.PointsMaterial({ color: 0xffaa77, size: 0.045, transparent: true, opacity: 0.55 }));
         coordGroup.add(markerPoints);
-        
-        function setEarthTexture(texture,msg){ if(currentMapTexture && currentMapTexture!==earthMat.map) currentMapTexture.dispose(); earthMat.map=texture; earthMat.needsUpdate=true; currentMapTexture=texture; if(document.getElementById('mapLoadStatus')) document.getElementById('mapLoadStatus').innerHTML=`✅ ${msg}`; }
-        function setMapBrightness(v) { earthMat.color.setScalar(Math.min(2.0, Math.max(0.2, v))); if(document.getElementById('brightnessValue')) document.getElementById('brightnessValue').innerText=v.toFixed(2); }
-        function loadMapForBoth(url,title){ currentMapURL=url; const loader=new THREE.TextureLoader(); loader.load(url,(tex)=>{ setEarthTexture(tex,title); if(currentMode==='2d'){ currentMapImageObj.src=url; currentMapImageObj.onload=()=>redraw2D(); } },undefined,()=>{ if(document.getElementById('mapLoadStatus')) document.getElementById('mapLoadStatus').innerHTML=`⚠️ Failed ${title}`; }); if(currentMode==='2d'){ currentMapImageObj.src=url; currentMapImageObj.onload=()=>redraw2D(); } }
-        
+
+        function setEarthTexture(texture, msg) { if (currentMapTexture && currentMapTexture !== earthMat.map) currentMapTexture.dispose(); earthMat.map = texture; earthMat.needsUpdate = true; currentMapTexture = texture; if (document.getElementById('mapLoadStatus')) document.getElementById('mapLoadStatus').innerHTML = `✅ ${msg}`; }
+        function setMapBrightness(v) { earthMat.color.setScalar(Math.min(2.0, Math.max(0.2, v))); if (document.getElementById('brightnessValue')) document.getElementById('brightnessValue').innerText = v.toFixed(2); }
+        function loadMapForBoth(url, title) { currentMapURL = url; const loader = new THREE.TextureLoader(); loader.load(url, (tex) => { setEarthTexture(tex, title); if (currentMode === '2d') { currentMapImageObj.src = url; currentMapImageObj.onload = () => redraw2D(); } }, undefined, () => { if (document.getElementById('mapLoadStatus')) document.getElementById('mapLoadStatus').innerHTML = `⚠️ Failed ${title}`; }); if (currentMode === '2d') { currentMapImageObj.src = url; currentMapImageObj.onload = () => redraw2D(); } }
+
         // ---------- 2D ENGINE ----------
         const canvas2d = document.getElementById('worldCanvas');
         let ctx2d = canvas2d.getContext('2d');
-        function resize2D(){ canvas2d.width = window.innerWidth; canvas2d.height = window.innerHeight; if(currentMode==='2d') redraw2D(); }
-        function latLonToVec(latDeg,lonDeg){ const latRad=latDeg*Math.PI/180, lonRad=lonDeg*Math.PI/180; const cosLat=Math.cos(latRad); return new THREE.Vector3(cosLat*Math.cos(lonRad), Math.sin(latRad), cosLat*Math.sin(lonRad)); }
-        function compute2DQuaternion(){ 
-            const targetVec=latLonToVec(currentPoleLat,currentPoleLon).normalize(); 
-            const northVec=new THREE.Vector3(0,1,0); 
-            const quatPole=new THREE.Quaternion().setFromUnitVectors(northVec,targetVec); 
+        function resize2D() { canvas2d.width = window.innerWidth; canvas2d.height = window.innerHeight; if (currentMode === '2d') redraw2D(); }
+        function latLonToVec(latDeg, lonDeg) { const latRad = latDeg * Math.PI / 180, lonRad = lonDeg * Math.PI / 180; const cosLat = Math.cos(latRad); return new THREE.Vector3(cosLat * Math.cos(lonRad), Math.sin(latRad), cosLat * Math.sin(lonRad)); }
+        function compute2DQuaternion() {
+            const targetVec = latLonToVec(currentPoleLat, currentPoleLon).normalize();
+            const northVec = new THREE.Vector3(0, 1, 0);
+            const quatPole = new THREE.Quaternion().setFromUnitVectors(northVec, targetVec);
             // FIX: Yaw rotation sign inversion to match 3D behavior (eastward rotation on +yaw)
-            const quatYaw=new THREE.Quaternion().setFromAxisAngle(targetVec, -currentYRot * Math.PI/180); 
-            return quatYaw.clone().multiply(quatPole); 
+            const quatYaw = new THREE.Quaternion().setFromAxisAngle(targetVec, -currentYRot * Math.PI / 180);
+            return quatYaw.clone().multiply(quatPole);
         }
-        function geoToCanvas(lon,lat,w,h){ return { x: (lon+180)/360*w, y: (90-lat)/180*h }; }
-        function splitAntimeridian(points){ if(points.length<2) return []; let segs=[], cur=[points[0]]; for(let i=1;i<points.length;i++){ let prev=points[i-1], curr=points[i]; let delta=curr.lon-prev.lon; if(Math.abs(delta)>180){ if(cur.length) segs.push([...cur]); cur=[curr]; } else cur.push(curr); } if(cur.length) segs.push(cur); return segs; }
-        function generate2DGridPaths(quat,w,h){ let meridians=[], parallels=[], equatorSegments=[]; for(let i=0;i<currentFluxCount;i++){ let az=(i/currentFluxCount)*360; let pts=[]; for(let step=0;step<=120;step++){ let colat=0.5 + (step/120)*179; let rad=colat*Math.PI/180; let xRot=Math.sin(rad)*Math.cos(az*Math.PI/180), yRot=Math.cos(rad), zRot=Math.sin(rad)*Math.sin(az*Math.PI/180); let world=new THREE.Vector3(xRot,yRot,zRot).applyQuaternion(quat); let lat=Math.asin(Math.min(0.999999,Math.max(-0.999999,world.y)))*180/Math.PI; let lon=Math.atan2(world.z,world.x)*180/Math.PI; pts.push({lon,lat}); } let segs=splitAntimeridian(pts); meridians.push(segs.map(seg=>seg.map(p=>geoToCanvas(p.lon,p.lat,w,h)))); }
-        if(currentEqDisDeg>0.01){ for(let lat=90-currentEqDisDeg; lat>-90; lat-=currentEqDisDeg){ if(Math.abs(lat)<0.01) continue; if(Math.abs(lat)>=89.99) continue; let pts=[]; for(let k=0;k<=180;k++){ let lonDeg=(k/180)*360-180; let orig=latLonToVec(lat,lonDeg); let rot=orig.applyQuaternion(quat); let rlat=Math.asin(Math.min(0.999999,Math.max(-0.999999,rot.y)))*180/Math.PI; let rlon=Math.atan2(rot.z,rot.x)*180/Math.PI; pts.push({lon:rlon,lat:rlat}); } let segs=splitAntimeridian(pts); parallels.push(segs.map(seg=>seg.map(p=>geoToCanvas(p.lon,p.lat,w,h)))); } }
-        let eqPts=[]; for(let k=0;k<=180;k++){ let lonDeg=(k/180)*360-180; let orig=latLonToVec(0,lonDeg); let rot=orig.applyQuaternion(quat); let rlat=Math.asin(Math.min(0.999999,Math.max(-0.999999,rot.y)))*180/Math.PI; let rlon=Math.atan2(rot.z,rot.x)*180/Math.PI; eqPts.push({lon:rlon,lat:rlat}); } let eqSegs=splitAntimeridian(eqPts); equatorSegments=eqSegs.map(seg=>seg.map(p=>geoToCanvas(p.lon,p.lat,w,h)));
-        return { meridians, parallels, equatorSegments }; }
-        function redraw2D(){ if(!ctx2d || !canvas2d.width || !canvas2d.height) return; if(!currentMapImageObj.complete || !currentMapImageObj.src) return; ctx2d.clearRect(0,0,canvas2d.width,canvas2d.height); ctx2d.drawImage(currentMapImageObj,0,0,canvas2d.width,canvas2d.height); const quat=compute2DQuaternion(); const paths=generate2DGridPaths(quat,canvas2d.width,canvas2d.height); ctx2d.save(); ctx2d.lineCap='round'; ctx2d.lineJoin='round'; ctx2d.lineWidth=globalLineWidth; ctx2d.globalAlpha=globalGridOpacity; ctx2d.strokeStyle=globalFluxColor; paths.meridians.forEach(mer=>{ mer.forEach(seg=>{ if(seg.length<2) return; ctx2d.beginPath(); ctx2d.moveTo(seg[0].x,seg[0].y); for(let i=1;i<seg.length;i++) ctx2d.lineTo(seg[i].x,seg[i].y); ctx2d.stroke(); }); }); ctx2d.strokeStyle=globalParallelColor; paths.parallels.forEach(par=>{ par.forEach(seg=>{ if(seg.length<2) return; ctx2d.beginPath(); ctx2d.moveTo(seg[0].x,seg[0].y); for(let i=1;i<seg.length;i++) ctx2d.lineTo(seg[i].x,seg[i].y); ctx2d.stroke(); }); }); ctx2d.strokeStyle='#ffaa66'; ctx2d.globalAlpha=0.95; paths.equatorSegments.forEach(seg=>{ if(seg.length<2) return; ctx2d.beginPath(); ctx2d.moveTo(seg[0].x,seg[0].y); for(let i=1;i<seg.length;i++) ctx2d.lineTo(seg[i].x,seg[i].y); ctx2d.stroke(); }); ctx2d.restore(); }
-        
+        function geoToCanvas(lon, lat, w, h) { return { x: (lon + 180) / 360 * w, y: (90 - lat) / 180 * h }; }
+        function splitAntimeridian(points) { if (points.length < 2) return []; let segs = [], cur = [points[0]]; for (let i = 1; i < points.length; i++) { let prev = points[i - 1], curr = points[i]; let delta = curr.lon - prev.lon; if (Math.abs(delta) > 180) { if (cur.length) segs.push([...cur]); cur = [curr]; } else cur.push(curr); } if (cur.length) segs.push(cur); return segs; }
+        function generate2DGridPaths(quat, w, h) {
+            let meridians = [], parallels = [], equatorSegments = []; for (let i = 0; i < currentFluxCount; i++) { let az = (i / currentFluxCount) * 360; let pts = []; for (let step = 0; step <= 120; step++) { let colat = 0.5 + (step / 120) * 179; let rad = colat * Math.PI / 180; let xRot = Math.sin(rad) * Math.cos(az * Math.PI / 180), yRot = Math.cos(rad), zRot = Math.sin(rad) * Math.sin(az * Math.PI / 180); let world = new THREE.Vector3(xRot, yRot, zRot).applyQuaternion(quat); let lat = Math.asin(Math.min(0.999999, Math.max(-0.999999, world.y))) * 180 / Math.PI; let lon = Math.atan2(world.z, world.x) * 180 / Math.PI; pts.push({ lon, lat }); } let segs = splitAntimeridian(pts); meridians.push(segs.map(seg => seg.map(p => geoToCanvas(p.lon, p.lat, w, h)))); }
+            if (currentEqDisDeg > 0.01) { for (let lat = 90 - currentEqDisDeg; lat > -90; lat -= currentEqDisDeg) { if (Math.abs(lat) < 0.01) continue; if (Math.abs(lat) >= 89.99) continue; let pts = []; for (let k = 0; k <= 180; k++) { let lonDeg = (k / 180) * 360 - 180; let orig = latLonToVec(lat, lonDeg); let rot = orig.applyQuaternion(quat); let rlat = Math.asin(Math.min(0.999999, Math.max(-0.999999, rot.y))) * 180 / Math.PI; let rlon = Math.atan2(rot.z, rot.x) * 180 / Math.PI; pts.push({ lon: rlon, lat: rlat }); } let segs = splitAntimeridian(pts); parallels.push(segs.map(seg => seg.map(p => geoToCanvas(p.lon, p.lat, w, h)))); } }
+            let eqPts = []; for (let k = 0; k <= 180; k++) { let lonDeg = (k / 180) * 360 - 180; let orig = latLonToVec(0, lonDeg); let rot = orig.applyQuaternion(quat); let rlat = Math.asin(Math.min(0.999999, Math.max(-0.999999, rot.y))) * 180 / Math.PI; let rlon = Math.atan2(rot.z, rot.x) * 180 / Math.PI; eqPts.push({ lon: rlon, lat: rlat }); } let eqSegs = splitAntimeridian(eqPts); equatorSegments = eqSegs.map(seg => seg.map(p => geoToCanvas(p.lon, p.lat, w, h)));
+            return { meridians, parallels, equatorSegments };
+        }
+        function redraw2D() { if (!ctx2d || !canvas2d.width || !canvas2d.height) return; if (!currentMapImageObj.complete || !currentMapImageObj.src) return; ctx2d.clearRect(0, 0, canvas2d.width, canvas2d.height); ctx2d.drawImage(currentMapImageObj, 0, 0, canvas2d.width, canvas2d.height); const quat = compute2DQuaternion(); const paths = generate2DGridPaths(quat, canvas2d.width, canvas2d.height); ctx2d.save(); ctx2d.lineCap = 'round'; ctx2d.lineJoin = 'round'; ctx2d.lineWidth = globalLineWidth; ctx2d.globalAlpha = globalGridOpacity; ctx2d.strokeStyle = globalFluxColor; paths.meridians.forEach(mer => { mer.forEach(seg => { if (seg.length < 2) return; ctx2d.beginPath(); ctx2d.moveTo(seg[0].x, seg[0].y); for (let i = 1; i < seg.length; i++) ctx2d.lineTo(seg[i].x, seg[i].y); ctx2d.stroke(); }); }); ctx2d.strokeStyle = globalParallelColor; paths.parallels.forEach(par => { par.forEach(seg => { if (seg.length < 2) return; ctx2d.beginPath(); ctx2d.moveTo(seg[0].x, seg[0].y); for (let i = 1; i < seg.length; i++) ctx2d.lineTo(seg[i].x, seg[i].y); ctx2d.stroke(); }); }); ctx2d.strokeStyle = '#ffaa66'; ctx2d.globalAlpha = 0.95; paths.equatorSegments.forEach(seg => { if (seg.length < 2) return; ctx2d.beginPath(); ctx2d.moveTo(seg[0].x, seg[0].y); for (let i = 1; i < seg.length; i++) ctx2d.lineTo(seg[i].x, seg[i].y); ctx2d.stroke(); }); ctx2d.restore(); }
+
         // ---------- SYNC & MODE SWITCH ----------
-        function setMode(mode){ currentMode=mode; const container3d=document.getElementById('canvas3dContainer'); const container2d=document.getElementById('canvas2dContainer'); if(mode==='3d'){ container3d.style.display='block'; container2d.style.display='none'; controls.enabled=true; renderer.setSize(window.innerWidth,window.innerHeight); rebuildFluxLines(currentFluxCount); rebuildLatitudeCircles(currentEqDisDeg); set3DPole(currentPoleLat,currentPoleLon); set3DYaw(currentYRot); apply3DStyle(); } else { container3d.style.display='none'; container2d.style.display='block'; controls.enabled=false; resize2D(); currentMapImageObj.src=currentMapURL; currentMapImageObj.onload=()=>redraw2D(); redraw2D(); } document.getElementById('mode3dBtn').classList.toggle('active',mode==='3d'); document.getElementById('mode2dBtn').classList.toggle('active',mode==='2d'); }
-        window.addEventListener('resize',()=>{ if(currentMode==='3d'){ renderer.setSize(window.innerWidth,window.innerHeight); camera.aspect=window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); } else resize2D(); });
-        function animate(){ requestAnimationFrame(animate); if(currentMode==='3d'){ controls.update(); renderer.render(scene,camera); } } animate();
-        
+        function setMode(mode) { currentMode = mode; const container3d = document.getElementById('canvas3dContainer'); const container2d = document.getElementById('canvas2dContainer'); if (mode === '3d') { container3d.style.display = 'block'; container2d.style.display = 'none'; controls.enabled = true; renderer.setSize(window.innerWidth, window.innerHeight); rebuildFluxLines(currentFluxCount); rebuildLatitudeCircles(currentEqDisDeg); set3DPole(currentPoleLat, currentPoleLon); set3DYaw(currentYRot); apply3DStyle(); } else { container3d.style.display = 'none'; container2d.style.display = 'block'; controls.enabled = false; resize2D(); currentMapImageObj.src = currentMapURL; currentMapImageObj.onload = () => redraw2D(); redraw2D(); } document.getElementById('mode3dBtn').classList.toggle('active', mode === '3d'); document.getElementById('mode2dBtn').classList.toggle('active', mode === '2d'); }
+        window.addEventListener('resize', () => { if (currentMode === '3d') { renderer.setSize(window.innerWidth, window.innerHeight); camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); } else resize2D(); });
+        function animate() { requestAnimationFrame(animate); if (currentMode === '3d') { controls.update(); renderer.render(scene, camera); } } animate();
+
         // CITY DATABASE & UI 
-        const citiesByContinent={"Europe":[{name:"London",lat:51.5074,lon:-0.1278},{name:"Paris",lat:48.8566,lon:2.3522},{name:"Berlin",lat:52.52,lon:13.405},{name:"Rome",lat:41.9028,lon:12.4964},{name:"Madrid",lat:40.4168,lon:-3.7038},{name:"Moscow",lat:55.7558,lon:37.6173},{name:"Istanbul",lat:41.0082,lon:28.9784}],"Asia":[{name:"Damascus",lat:33.5138,lon:36.2765},{name:"Tokyo",lat:35.6895,lon:139.6917},{name:"Beijing",lat:39.9042,lon:116.4074},{name:"New Delhi",lat:28.6139,lon:77.209},{name:"Shanghai",lat:31.2304,lon:121.4737},{name:"Mumbai",lat:19.076,lon:72.8777},{name:"Singapore",lat:1.3521,lon:103.8198},{name:"Bangkok",lat:13.7367,lon:100.5231},{name:"Seoul",lat:37.5665,lon:126.978},{name:"Jakarta",lat:-6.2088,lon:106.8456}],"Americas":[{name:"New York",lat:40.7128,lon:-74.006},{name:"Los Angeles",lat:34.0522,lon:-118.2437},{name:"Rio de Janeiro",lat:-22.9068,lon:-43.1729},{name:"São Paulo",lat:-23.5505,lon:-46.6333},{name:"Buenos Aires",lat:-34.6037,lon:-58.3816},{name:"Mexico City",lat:19.4326,lon:-99.1332},{name:"Toronto",lat:43.6532,lon:-79.3832}],"Africa":[{name:"Cairo",lat:30.0444,lon:31.2357},{name:"Cape Town",lat:-33.9249,lon:18.4241},{name:"Lagos",lat:6.5244,lon:3.3792},{name:"Nairobi",lat:-1.2864,lon:36.8172}],"Oceania":[{name:"Sydney",lat:-33.8688,lon:151.2093},{name:"Melbourne",lat:-37.8136,lon:144.9631},{name:"Auckland",lat:-36.8485,lon:174.7633}]};
-        function highlightSelectedCityInPanel(){ document.querySelectorAll('.city-btn').forEach(btn=>{ const lat=parseFloat(btn.dataset.lat),lon=parseFloat(btn.dataset.lon); if(Math.abs(lat-currentPoleLat)<0.01 && Math.abs(lon-currentPoleLon)<0.01) btn.classList.add('city-selected'); else btn.classList.remove('city-selected'); }); }
-        function rotateCoordsToNewPole(lat,lon){ currentPoleLat=lat; currentPoleLon=lon; if(currentMode==='3d') set3DPole(lat,lon); else if(currentMode==='2d') redraw2D(); highlightSelectedCityInPanel(); updateStatusMsg(); }
-        function updateStatusMsg(){ const s=document.getElementById('statusMsgDynamic'); if(s) s.innerHTML=`📍 Pole: ${currentPoleLat.toFixed(2)}°, ${currentPoleLon.toFixed(2)}°  |  🧭 Yaw: ${currentYRot}°`; }
-        
+        const citiesByContinent = { "Europe": [{ name: "London", lat: 51.5074, lon: -0.1278 }, { name: "Paris", lat: 48.8566, lon: 2.3522 }, { name: "Berlin", lat: 52.52, lon: 13.405 }, { name: "Rome", lat: 41.9028, lon: 12.4964 }, { name: "Madrid", lat: 40.4168, lon: -3.7038 }, { name: "Moscow", lat: 55.7558, lon: 37.6173 }, { name: "Istanbul", lat: 41.0082, lon: 28.9784 }], "Asia": [{ name: "Damascus", lat: 33.5138, lon: 36.2765 }, { name: "Tokyo", lat: 35.6895, lon: 139.6917 }, { name: "Beijing", lat: 39.9042, lon: 116.4074 }, { name: "New Delhi", lat: 28.6139, lon: 77.209 }, { name: "Shanghai", lat: 31.2304, lon: 121.4737 }, { name: "Mumbai", lat: 19.076, lon: 72.8777 }, { name: "Singapore", lat: 1.3521, lon: 103.8198 }, { name: "Bangkok", lat: 13.7367, lon: 100.5231 }, { name: "Seoul", lat: 37.5665, lon: 126.978 }, { name: "Jakarta", lat: -6.2088, lon: 106.8456 }], "Americas": [{ name: "New York", lat: 40.7128, lon: -74.006 }, { name: "Los Angeles", lat: 34.0522, lon: -118.2437 }, { name: "Rio de Janeiro", lat: -22.9068, lon: -43.1729 }, { name: "São Paulo", lat: -23.5505, lon: -46.6333 }, { name: "Buenos Aires", lat: -34.6037, lon: -58.3816 }, { name: "Mexico City", lat: 19.4326, lon: -99.1332 }, { name: "Toronto", lat: 43.6532, lon: -79.3832 }], "Africa": [{ name: "Cairo", lat: 30.0444, lon: 31.2357 }, { name: "Cape Town", lat: -33.9249, lon: 18.4241 }, { name: "Lagos", lat: 6.5244, lon: 3.3792 }, { name: "Nairobi", lat: -1.2864, lon: 36.8172 }], "Oceania": [{ name: "Sydney", lat: -33.8688, lon: 151.2093 }, { name: "Melbourne", lat: -37.8136, lon: 144.9631 }, { name: "Auckland", lat: -36.8485, lon: 174.7633 }] };
+        function highlightSelectedCityInPanel() { document.querySelectorAll('.city-btn').forEach(btn => { const lat = parseFloat(btn.dataset.lat), lon = parseFloat(btn.dataset.lon); if (Math.abs(lat - currentPoleLat) < 0.01 && Math.abs(lon - currentPoleLon) < 0.01) btn.classList.add('city-selected'); else btn.classList.remove('city-selected'); }); }
+        function rotateCoordsToNewPole(lat, lon) { currentPoleLat = lat; currentPoleLon = lon; if (currentMode === '3d') set3DPole(lat, lon); else if (currentMode === '2d') redraw2D(); highlightSelectedCityInPanel(); updateStatusMsg(); }
+        function updateStatusMsg() { const s = document.getElementById('statusMsgDynamic'); if (s) s.innerHTML = `📍 Pole: ${currentPoleLat.toFixed(2)}°, ${currentPoleLon.toFixed(2)}°  |  🧭 Yaw: ${currentYRot}°`; }
+
         // Panel builders (identical except for yaw direction unified)
-        function buildCitiesPanel(){ return `<div class="panel-header"><h3>🌐 CITIES → POLE</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><strong>📍 Select city to align grid</strong>${Object.entries(citiesByContinent).map(([cont,cities])=>`<div class="continent-group"><div class="continent-title">✦ ${cont}</div><div class="city-buttons">${cities.map(c=>`<button class="city-btn" data-lat="${c.lat}" data-lon="${c.lon}">${c.name}</button>`).join('')}</div></div>`).join('')}<div><strong>🎯 Custom Coordinates</strong></div><div class="coord-input"><input type="number" id="latCtx" value="${currentPoleLat}" step="any"><input type="number" id="lonCtx" value="${currentPoleLon}" step="any"><button id="customPoleCtx" class="action-btn">Set Pole</button></div><button id="resetGridCtx" class="action-btn reset-btn">⟳ Reset Pole & Yaw</button><div id="statusMsgDynamic" class="status-box">📍 Pole: ${currentPoleLat.toFixed(2)}°, ${currentPoleLon.toFixed(2)}°  |  🧭 Yaw: ${currentYRot}°</div></div>`; }
-        function attachCitiesEvents(){ document.querySelectorAll('.city-btn').forEach(btn=>btn.addEventListener('click',()=>{ const lat=parseFloat(btn.dataset.lat),lon=parseFloat(btn.dataset.lon); rotateCoordsToNewPole(lat,lon); if(document.getElementById('latCtx')) document.getElementById('latCtx').value=lat; if(document.getElementById('lonCtx')) document.getElementById('lonCtx').value=lon; highlightSelectedCityInPanel(); updateStatusMsg(); })); document.getElementById('customPoleCtx')?.addEventListener('click',()=>{ let lat=parseFloat(document.getElementById('latCtx').value)||0, lon=parseFloat(document.getElementById('lonCtx').value)||0; lat=Math.min(90,Math.max(-90,lat)); rotateCoordsToNewPole(lat,lon); highlightSelectedCityInPanel(); updateStatusMsg(); }); document.getElementById('resetGridCtx')?.addEventListener('click',()=>{ resetCoordinates(); if(document.getElementById('latCtx')) document.getElementById('latCtx').value=90; if(document.getElementById('lonCtx')) document.getElementById('lonCtx').value=0; highlightSelectedCityInPanel(); updateStatusMsg(); }); updateStatusMsg(); highlightSelectedCityInPanel(); }
-        function buildStylePanel(){ return `<div class="panel-header"><h3>🎨 STYLE & ROTATION</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><div class="slider-container"><label>🔄 Yaw Rotation <span id="yrotValue">${currentYRot}</span></label><input type="range" id="yrotSlider" min="0" max="360" step="1" value="${currentYRot}"></div><div class="slider-container"><label>🌀 Flux Count <span id="fluxCountVal">${currentFluxCount}</span></label><input type="range" id="fluxCountSlider" min="1" max="72" value="${currentFluxCount}"></div><div class="slider-container"><label>📐 Equal Distance Step: <span id="eqDisDisValue">${currentEqDisValue}</span>  |  Δ = <span id="eqDisDegValue">${currentEqDisDeg.toFixed(2)}</span>°</label><input type="range" id="eqDisSlider" min="500" max="10000" step="10" value="${currentEqDisValue}"></div><div class="slider-container"><label>🌀 Opacity <span id="gridOpacityValStyle">${globalGridOpacity.toFixed(2)}</span></label><input type="range" id="globalGridOpacity" min="0" max="1" step="0.01" value="${globalGridOpacity}"></div><div class="slider-container"><label>📏 Thickness <span id="thicknessValStyle">${globalLineWidth.toFixed(1)}</span></label><input type="range" id="globalLineWidth" min="0.8" max="5.5" step="0.1" value="${globalLineWidth}"></div><div class="color-row"><span>Flux Lines:</span><input type="color" id="globalFluxColor" value="${globalFluxColor}"></div><div class="color-row"><span>Latitude Circles:</span><input type="color" id="globalSameDistColor" value="${globalParallelColor}"></div></div>`; }
-        function attachStyleEvents(){ const refresh=()=>{ globalGridOpacity=parseFloat(document.getElementById('globalGridOpacity').value); globalLineWidth=parseFloat(document.getElementById('globalLineWidth').value); globalFluxColor=document.getElementById('globalFluxColor').value; globalParallelColor=document.getElementById('globalSameDistColor').value; document.getElementById('gridOpacityValStyle').innerText=globalGridOpacity.toFixed(2); document.getElementById('thicknessValStyle').innerText=globalLineWidth.toFixed(1); apply3DStyle(); if(currentMode==='2d') redraw2D(); }; document.getElementById('globalGridOpacity')?.addEventListener('input',refresh); document.getElementById('globalLineWidth')?.addEventListener('input',refresh); document.getElementById('globalFluxColor')?.addEventListener('input',refresh); document.getElementById('globalSameDistColor')?.addEventListener('input',refresh); document.getElementById('fluxCountSlider')?.addEventListener('input',e=>updateFluxCount(e.target.value)); document.getElementById('eqDisSlider')?.addEventListener('input',e=>updateEqualDistanceStep(e.target.value)); document.getElementById('yrotSlider')?.addEventListener('input',e=>{ currentYRot=parseInt(e.target.value); if(currentMode==='3d') set3DYaw(currentYRot); if(currentMode==='2d') redraw2D(); if(document.getElementById('yrotValue')) document.getElementById('yrotValue').innerText=currentYRot; updateStatusMsg(); }); refresh(); }
-        function buildLightingPanel(){ return `<div class="panel-header"><h3>💡 LIGHTING</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><div class="slider-container"><label>🌙 Ambient <span id="ambVal">${ambientLight.intensity.toFixed(2)}</span></label><input type="range" id="ambIntensity" min="0" max="3" step="0.01" value="${ambientLight.intensity}"></div><div class="slider-container"><label>☀️ Sun Intensity <span id="dirVal">${sunLight.intensity.toFixed(2)}</span></label><input type="range" id="dirIntensity" min="0" max="3" step="0.01" value="${sunLight.intensity}"></div><div class="angle-row"><div><label>Azimuth: <span id="azimuthVal">${currentAzimuth}</span></label><input type="range" id="sunAzimuth" min="-180" max="180" value="${currentAzimuth}"></div><div><label>Elevation: <span id="elevVal">${currentElevation}</span></label><input type="range" id="sunElevation" min="-90" max="90" value="${currentElevation}"></div></div><div id="sunPosStatus" class="status-box">Sun tracking</div></div>`; }
-        function attachLightingEvents(){ const amb=document.getElementById('ambIntensity'),dir=document.getElementById('dirIntensity'),az=document.getElementById('sunAzimuth'),el=document.getElementById('sunElevation'); const updateSun=()=>{ currentAzimuth=parseFloat(az.value); currentElevation=parseFloat(el.value); document.getElementById('azimuthVal').innerText=currentAzimuth; document.getElementById('elevVal').innerText=currentElevation; updateSunDirection(currentAzimuth,currentElevation); if(document.getElementById('sunPosStatus')) document.getElementById('sunPosStatus').innerHTML=`☀️ Sun Pos: (${sunLight.position.x.toFixed(1)}, ${sunLight.position.y.toFixed(1)}, ${sunLight.position.z.toFixed(1)})`; }; amb.oninput=()=>{ ambientLight.intensity=parseFloat(amb.value); document.getElementById('ambVal').innerText=ambientLight.intensity.toFixed(2); }; dir.oninput=()=>{ sunLight.intensity=parseFloat(dir.value); document.getElementById('dirVal').innerText=sunLight.intensity.toFixed(2); }; az.oninput=updateSun; el.oninput=updateSun; updateSun(); }
-        function buildMapPanel(){ return `<div class="panel-header"><h3>🗺️ MAP GALLERY</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><div class="map-list">${[{url:'https://professor-yasirsultan.github.io/ysgf/img/earth_day_4096.jpg',title:'🛰️ Ultra HD Satellite'},{url:'https://professor-yasirsultan.github.io/ysgf/img/earth_atmos_2048.jpg',title:'🌍 Geographical Atlas'},{url:'https://professor-yasirsultan.github.io/ysgf/img/earth_lights_2048.png',title:'🌙 Night Lights'}].map(m=>`<div class="map-card" data-map-url="${m.url}" data-map-title="${m.title}"><div class="map-title">${m.title}</div></div>`).join('')}</div><div class="upload-area"><label>📤 Custom Map:</label><input type="file" id="customMapUpload" accept="image/jpeg,image/png"></div><div class="slider-container"><label>🔆 Brightness <span id="brightnessValue">1.00</span></label><input type="range" id="mapBrightnessSlider" min="0.2" max="2.0" step="0.01" value="1.0"></div><div id="mapLoadStatus" class="status-box">✅ Ready</div></div>`; }
-        function attachMapEvents(){ document.querySelectorAll('.map-card').forEach(c=>c.addEventListener('click',()=>{ const url=c.dataset.mapUrl; loadMapForBoth(url,c.dataset.mapTitle); })); document.getElementById('customMapUpload')?.addEventListener('change',e=>{ if(e.target.files[0]){ const reader=new FileReader(); reader.onload=ev=>{ const tex=new THREE.TextureLoader().load(ev.target.result); setEarthTexture(tex,`Custom`); currentMapURL=ev.target.result; if(currentMode==='2d'){ currentMapImageObj.src=ev.target.result; currentMapImageObj.onload=()=>redraw2D(); } }; reader.readAsDataURL(e.target.files[0]); } }); document.getElementById('mapBrightnessSlider')?.addEventListener('input',()=>{ const v=parseFloat(document.getElementById('mapBrightnessSlider').value); setMapBrightness(v); }); }
-        function buildInfoPanel(){ return `<div class="panel-header"><h3>ℹ️ YSGF</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><div class="info-text"><strong>YSGF (Yasir Sultan Geodesic Flux)</strong><br><a href="https://professor-yasirsultan.github.io/" target="_blank">Prof. Yasir Sultan - Homepage</a><br><a href="https://www.youtube.com/@prof.yasir.sultan?sub_confirmation=1" target="_blank">YouTube</a><br><a href="https://professor-yasirsultan.github.io/ysgf" target="_blank">YSGF Home</a></div><div class="status-box">YSGF 2026<br> version 4.0.1<br>3 June 2026</div></div>`; }
-        
+        function buildCitiesPanel() { return `<div class="panel-header"><h3>🌐 CITIES → POLE</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><strong>📍 Select city to align grid</strong>${Object.entries(citiesByContinent).map(([cont, cities]) => `<div class="continent-group"><div class="continent-title">✦ ${cont}</div><div class="city-buttons">${cities.map(c => `<button class="city-btn" data-lat="${c.lat}" data-lon="${c.lon}">${c.name}</button>`).join('')}</div></div>`).join('')}<div><strong>🎯 Custom Coordinates</strong></div><div class="coord-input"><input type="number" id="latCtx" value="${currentPoleLat}" step="any"><input type="number" id="lonCtx" value="${currentPoleLon}" step="any"><button id="customPoleCtx" class="action-btn">Set Pole</button></div><button id="resetGridCtx" class="action-btn reset-btn">⟳ Reset Pole & Yaw</button><div id="statusMsgDynamic" class="status-box">📍 Pole: ${currentPoleLat.toFixed(2)}°, ${currentPoleLon.toFixed(2)}°  |  🧭 Yaw: ${currentYRot}°</div></div>`; }
+        function attachCitiesEvents() { document.querySelectorAll('.city-btn').forEach(btn => btn.addEventListener('click', () => { const lat = parseFloat(btn.dataset.lat), lon = parseFloat(btn.dataset.lon); rotateCoordsToNewPole(lat, lon); if (document.getElementById('latCtx')) document.getElementById('latCtx').value = lat; if (document.getElementById('lonCtx')) document.getElementById('lonCtx').value = lon; highlightSelectedCityInPanel(); updateStatusMsg(); })); document.getElementById('customPoleCtx')?.addEventListener('click', () => { let lat = parseFloat(document.getElementById('latCtx').value) || 0, lon = parseFloat(document.getElementById('lonCtx').value) || 0; lat = Math.min(90, Math.max(-90, lat)); rotateCoordsToNewPole(lat, lon); highlightSelectedCityInPanel(); updateStatusMsg(); }); document.getElementById('resetGridCtx')?.addEventListener('click', () => { resetCoordinates(); if (document.getElementById('latCtx')) document.getElementById('latCtx').value = 90; if (document.getElementById('lonCtx')) document.getElementById('lonCtx').value = 0; highlightSelectedCityInPanel(); updateStatusMsg(); }); updateStatusMsg(); highlightSelectedCityInPanel(); }
+        function buildStylePanel() { return `<div class="panel-header"><h3>🎨 STYLE & ROTATION</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><div class="slider-container"><label>🔄 Yaw Rotation <span id="yrotValue">${currentYRot}</span></label><input type="range" id="yrotSlider" min="0" max="360" step="1" value="${currentYRot}"></div><div class="slider-container"><label>🌀 Flux Count <span id="fluxCountVal">${currentFluxCount}</span></label><input type="range" id="fluxCountSlider" min="1" max="72" value="${currentFluxCount}"></div><div class="slider-container"><label>📐 Equal Distance Step: <span id="eqDisDisValue">${currentEqDisValue}</span>  |  Δ = <span id="eqDisDegValue">${currentEqDisDeg.toFixed(2)}</span>°</label><input type="range" id="eqDisSlider" min="500" max="10000" step="10" value="${currentEqDisValue}"></div><div class="slider-container"><label>🌀 Opacity <span id="gridOpacityValStyle">${globalGridOpacity.toFixed(2)}</span></label><input type="range" id="globalGridOpacity" min="0" max="1" step="0.01" value="${globalGridOpacity}"></div><div class="slider-container"><label>📏 Thickness <span id="thicknessValStyle">${globalLineWidth.toFixed(1)}</span></label><input type="range" id="globalLineWidth" min="0.8" max="5.5" step="0.1" value="${globalLineWidth}"></div><div class="color-row"><span>Flux Lines:</span><input type="color" id="globalFluxColor" value="${globalFluxColor}"></div><div class="color-row"><span>Latitude Circles:</span><input type="color" id="globalSameDistColor" value="${globalParallelColor}"></div></div>`; }
+        function attachStyleEvents() { const refresh = () => { globalGridOpacity = parseFloat(document.getElementById('globalGridOpacity').value); globalLineWidth = parseFloat(document.getElementById('globalLineWidth').value); globalFluxColor = document.getElementById('globalFluxColor').value; globalParallelColor = document.getElementById('globalSameDistColor').value; document.getElementById('gridOpacityValStyle').innerText = globalGridOpacity.toFixed(2); document.getElementById('thicknessValStyle').innerText = globalLineWidth.toFixed(1); apply3DStyle(); if (currentMode === '2d') redraw2D(); }; document.getElementById('globalGridOpacity')?.addEventListener('input', refresh); document.getElementById('globalLineWidth')?.addEventListener('input', refresh); document.getElementById('globalFluxColor')?.addEventListener('input', refresh); document.getElementById('globalSameDistColor')?.addEventListener('input', refresh); document.getElementById('fluxCountSlider')?.addEventListener('input', e => updateFluxCount(e.target.value)); document.getElementById('eqDisSlider')?.addEventListener('input', e => updateEqualDistanceStep(e.target.value)); document.getElementById('yrotSlider')?.addEventListener('input', e => { currentYRot = parseInt(e.target.value); if (currentMode === '3d') set3DYaw(currentYRot); if (currentMode === '2d') redraw2D(); if (document.getElementById('yrotValue')) document.getElementById('yrotValue').innerText = currentYRot; updateStatusMsg(); }); refresh(); }
+        function buildLightingPanel() { return `<div class="panel-header"><h3>💡 LIGHTING</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><div class="slider-container"><label>🌙 Ambient <span id="ambVal">${ambientLight.intensity.toFixed(2)}</span></label><input type="range" id="ambIntensity" min="0" max="3" step="0.01" value="${ambientLight.intensity}"></div><div class="slider-container"><label>☀️ Sun Intensity <span id="dirVal">${sunLight.intensity.toFixed(2)}</span></label><input type="range" id="dirIntensity" min="0" max="3" step="0.01" value="${sunLight.intensity}"></div><div class="angle-row"><div><label>Azimuth: <span id="azimuthVal">${currentAzimuth}</span></label><input type="range" id="sunAzimuth" min="-180" max="180" value="${currentAzimuth}"></div><div><label>Elevation: <span id="elevVal">${currentElevation}</span></label><input type="range" id="sunElevation" min="-90" max="90" value="${currentElevation}"></div></div><div id="sunPosStatus" class="status-box">Sun tracking</div></div>`; }
+        function attachLightingEvents() { const amb = document.getElementById('ambIntensity'), dir = document.getElementById('dirIntensity'), az = document.getElementById('sunAzimuth'), el = document.getElementById('sunElevation'); const updateSun = () => { currentAzimuth = parseFloat(az.value); currentElevation = parseFloat(el.value); document.getElementById('azimuthVal').innerText = currentAzimuth; document.getElementById('elevVal').innerText = currentElevation; updateSunDirection(currentAzimuth, currentElevation); if (document.getElementById('sunPosStatus')) document.getElementById('sunPosStatus').innerHTML = `☀️ Sun Pos: (${sunLight.position.x.toFixed(1)}, ${sunLight.position.y.toFixed(1)}, ${sunLight.position.z.toFixed(1)})`; }; amb.oninput = () => { ambientLight.intensity = parseFloat(amb.value); document.getElementById('ambVal').innerText = ambientLight.intensity.toFixed(2); }; dir.oninput = () => { sunLight.intensity = parseFloat(dir.value); document.getElementById('dirVal').innerText = sunLight.intensity.toFixed(2); }; az.oninput = updateSun; el.oninput = updateSun; updateSun(); }
+        function buildMapPanel() { return `<div class="panel-header"><h3>🗺️ MAP GALLERY</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><div class="map-list">${[{ url: 'https://professor-yasirsultan.github.io/ysgf/img/earth_day_4096.jpg', title: '🛰️ Ultra HD Satellite' }, { url: 'https://professor-yasirsultan.github.io/ysgf/img/earth_atmos_2048.jpg', title: '🌍 Geographical Atlas' }, { url: 'https://professor-yasirsultan.github.io/ysgf/img/earth_lights_2048.png', title: '🌙 Night Lights' }].map(m => `<div class="map-card" data-map-url="${m.url}" data-map-title="${m.title}"><div class="map-title">${m.title}</div></div>`).join('')}</div><div class="upload-area"><label>📤 Custom Map:</label><input type="file" id="customMapUpload" accept="image/jpeg,image/png"></div><div class="slider-container"><label>🔆 Brightness <span id="brightnessValue">1.00</span></label><input type="range" id="mapBrightnessSlider" min="0.2" max="2.0" step="0.01" value="1.0"></div><div id="mapLoadStatus" class="status-box">✅ Ready</div></div>`; }
+        function attachMapEvents() { document.querySelectorAll('.map-card').forEach(c => c.addEventListener('click', () => { const url = c.dataset.mapUrl; loadMapForBoth(url, c.dataset.mapTitle); })); document.getElementById('customMapUpload')?.addEventListener('change', e => { if (e.target.files[0]) { const reader = new FileReader(); reader.onload = ev => { const tex = new THREE.TextureLoader().load(ev.target.result); setEarthTexture(tex, `Custom`); currentMapURL = ev.target.result; if (currentMode === '2d') { currentMapImageObj.src = ev.target.result; currentMapImageObj.onload = () => redraw2D(); } }; reader.readAsDataURL(e.target.files[0]); } }); document.getElementById('mapBrightnessSlider')?.addEventListener('input', () => { const v = parseFloat(document.getElementById('mapBrightnessSlider').value); setMapBrightness(v); }); }
+        function buildInfoPanel() { return `<div class="panel-header"><h3>ℹ️ YSGF</h3><button class="close-panel-btn">✖</button></div><div class="context-panel-content"><div class="info-text"><strong>YSGF (Yasir Sultan Geodesic Flux)</strong><br><a href="https://professor-yasirsultan.github.io/" target="_blank">Prof. Yasir Sultan - Homepage</a><br><a href="https://www.youtube.com/@prof.yasir.sultan?sub_confirmation=1" target="_blank">YouTube</a><br><a href="https://professor-yasirsultan.github.io/ysgf" target="_blank">YSGF Home</a></div><div class="status-box">YSGF 2026<br> version 4.0.3<br>5 June 2026</div></div>`; }
+
         // UI wiring
-        document.getElementById('settingsToggleBtn').addEventListener('click',()=>{ document.getElementById('sideMenu').classList.toggle('open'); });
-        document.getElementById('closeSideMenuBtn').addEventListener('click',()=>{ document.getElementById('sideMenu').classList.remove('open'); });
-        function showPanel(builder,attach){ const panel=document.getElementById('contextPanel'); panel.innerHTML=builder(); panel.classList.add('active'); if(attach) setTimeout(attach,20); const close=panel.querySelector('.close-panel-btn'); if(close) close.addEventListener('click',()=>{ panel.classList.remove('active'); }); }
-        document.getElementById('btnCitiesCat').addEventListener('click',()=>showPanel(buildCitiesPanel,attachCitiesEvents));
-        document.getElementById('btnStyleCat').addEventListener('click',()=>showPanel(buildStylePanel,attachStyleEvents));
-        document.getElementById('btnLightsCat').addEventListener('click',()=>showPanel(buildLightingPanel,attachLightingEvents));
-        document.getElementById('btnMapCat').addEventListener('click',()=>showPanel(buildMapPanel,attachMapEvents));
-        document.getElementById('btnInfoCat').addEventListener('click',()=>showPanel(buildInfoPanel,null));
-        document.getElementById('mode3dBtn').addEventListener('click',()=>setMode('3d'));
-        document.getElementById('mode2dBtn').addEventListener('click',()=>setMode('2d'));
-        document.getElementById('closeWelcomeBtn').addEventListener('click',()=>{ const w=document.getElementById('welcomeScreen'); w.style.opacity='0'; setTimeout(()=>w.style.display='none',700); });
-        resetCoordinates(); loadMapForBoth(currentMapURL,'Ultra HD'); setMode('3d');
+        document.getElementById('settingsToggleBtn').addEventListener('click', () => { document.getElementById('sideMenu').classList.toggle('open'); });
+        document.getElementById('closeSideMenuBtn').addEventListener('click', () => { document.getElementById('sideMenu').classList.remove('open'); });
+        function showPanel(builder, attach) { const panel = document.getElementById('contextPanel'); panel.innerHTML = builder(); panel.classList.add('active'); if (attach) setTimeout(attach, 20); const close = panel.querySelector('.close-panel-btn'); if (close) close.addEventListener('click', () => { panel.classList.remove('active'); }); }
+        document.getElementById('btnCitiesCat').addEventListener('click', () => showPanel(buildCitiesPanel, attachCitiesEvents));
+        document.getElementById('btnStyleCat').addEventListener('click', () => showPanel(buildStylePanel, attachStyleEvents));
+        document.getElementById('btnLightsCat').addEventListener('click', () => showPanel(buildLightingPanel, attachLightingEvents));
+        document.getElementById('btnMapCat').addEventListener('click', () => showPanel(buildMapPanel, attachMapEvents));
+        document.getElementById('btnInfoCat').addEventListener('click', () => showPanel(buildInfoPanel, null));
+        document.getElementById('mode3dBtn').addEventListener('click', () => setMode('3d'));
+        document.getElementById('mode2dBtn').addEventListener('click', () => setMode('2d'));
+        document.getElementById('closeWelcomeBtn').addEventListener('click', () => { const w = document.getElementById('welcomeScreen'); w.style.opacity = '0'; setTimeout(() => w.style.display = 'none', 700); });
+        resetCoordinates(); loadMapForBoth(currentMapURL, 'Ultra HD'); setMode('3d');
     </script>
 </body>
+
 </html>
